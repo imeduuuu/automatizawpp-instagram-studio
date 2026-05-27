@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instagram Studio · automatizawpp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500&family=Inter:wght@400;500&display=swap');
+/* Paleta REAL del sitio premium (assets/styles.css) */
+:root{
+  --green:#25D366; --green-deep:#0E6B3C; --bg:#0A0F0D; --bg-2:#0F1614;
+  --surface:#141C19; --surface-2:#1B2520; --line:rgba(255,255,255,.08);
+  --text:#E8F1ED; --muted:#8FA39B; --gold:#D4B36A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(800px 600px at 80% -10%, rgba(37,211,102,.10), transparent 60%),
+  radial-gradient(700px 500px at -10% 30%, rgba(14,107,60,.10), transparent 60%);}
+header{display:flex;align-items:center;gap:14px;padding:22px 32px;border-bottom:1px solid var(--line)}
+header .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center}
+header h1{font-family:'Space Grotesk',sans-serif;font-size:22px}
+header h1 b{color:var(--green)}
+header .status{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);border:1px solid var(--line);padding:8px 14px;border-radius:999px}
+header .status .off{color:var(--gold)}
+.layout{display:grid;grid-template-columns:380px 1fr;gap:28px;padding:28px 32px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+/* Editor */
+.editor{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;height:fit-content}
+.editor h2{font-family:'Space Grotesk',sans-serif;font-size:16px;margin-bottom:6px}
+.editor p.hint{color:var(--muted);font-size:13px;margin-bottom:18px}
+.editor label{display:block;font-size:12px;color:var(--muted);margin:14px 0 6px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
+.editor input,.editor textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:10px 12px;font-family:'Inter',sans-serif;font-size:14px}
+.editor textarea{resize:vertical;min-height:64px}
+.editor .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.editor .tab{flex:1;min-width:42px;text-align:center;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:8px 0;cursor:pointer;font-size:13px}
+.editor .tab.active{background:linear-gradient(135deg,var(--green),var(--green-deep));color:#04130b;font-weight:700;border-color:transparent}
+.note{margin-top:18px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px;line-height:1.5}
+/* Feed grid (vista perfil) */
+.feed-wrap h2{font-family:'Space Grotesk',sans-serif;font-size:16px;margin-bottom:14px;color:var(--muted)}
+.feed{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:760px}
+.cell{aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--line);position:relative}
+/* --- Plantilla del POST (mismo ADN que generate.py) --- */
+.post{position:absolute;inset:0;background:var(--bg);overflow:hidden;
+  /* el post real es 1080x1080; aqui se escala dentro de la celda */
+  width:1080px;height:1080px;transform-origin:top left}
+.post::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(620px 520px at 88% -8%, rgba(37,211,102,.18), transparent 60%),
+  radial-gradient(560px 460px at -8% 108%, rgba(212,179,106,.10), transparent 60%),
+  linear-gradient(180deg,var(--bg) 0%, var(--bg-2) 100%);}
+.post .pframe{position:relative;z-index:2;width:100%;height:100%;padding:96px;display:flex;flex-direction:column;justify-content:space-between}
+.post .ptop{display:flex;align-items:center;gap:16px}
+.post .pdot{width:11px;height:11px;border-radius:50%;background:var(--green);box-shadow:0 0 16px var(--green)}
+.post .plabel{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:.32em;color:var(--muted);text-transform:uppercase}
+.post .phair{height:1px;width:120px;background:linear-gradient(90deg,var(--gold),transparent);margin-top:18px}
+.post .phero{flex:1;display:flex;flex-direction:column;justify-content:center}
+.post h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:92px;line-height:1.04;letter-spacing:-.02em;max-width:880px}
+.post h1 em{font-style:normal;color:var(--green)}
+.post .psub{margin-top:30px;font-size:32px;line-height:1.45;color:var(--muted);max-width:760px}
+.post .pstat{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:300px;line-height:.9;color:var(--green);letter-spacing:-.04em;text-shadow:0 0 60px rgba(37,211,102,.35);margin-bottom:10px}
+.post .pcta{margin-top:46px;display:inline-flex;align-items:center;gap:14px;align-self:flex-start;background:linear-gradient(135deg,var(--green),var(--green-deep));color:#04130b;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;padding:26px 46px;border-radius:18px}
+.post .pbrand{display:flex;align-items:center;gap:16px}
+.post .pbrand .wm{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px}
+.post .pbrand .wm b{color:var(--green)}
+.post .pbrand .tag{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">
+    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6 2 11c0 2 .7 3.8 2 5.3L3 22l6-1.5c1 .3 2 .5 3 .5 5.5 0 10-4 10-9S17.5 2 12 2z" fill="#fff"/></svg>
+  </span>
+  <h1>Instagram <b>Studio</b></h1>
+  <span class="status">Auto-publicación: <span class="off">DESACTIVADA</span> · requiere CNPJ + verificación Meta</span>
+</header>
+
+<div class="layout">
+  <!-- EDITOR -->
+  <aside class="editor">
+    <h2>Editor del feed</h2>
+    <p class="hint">Edita el texto y mira el cambio al instante en la cuadrícula. Rodea palabras con &lt;em&gt;…&lt;/em&gt; para resaltarlas en verde.</p>
+    <div class="tabs" id="tabs"></div>
+    <label>Etiqueta</label>
+    <input id="f_label" type="text">
+    <label>Titular (admite &lt;em&gt;)</label>
+    <textarea id="f_headline"></textarea>
+    <label>Subtítulo</label>
+    <textarea id="f_sub"></textarea>
+    <label>Botón CTA (opcional)</label>
+    <input id="f_cta" type="text">
+    <label>Dato grande (opcional)</label>
+    <input id="f_stat" type="text">
+    <div class="note">
+      <b>Exportar a PNG 1080×1080:</b> ejecuta el motor<br>
+      <code>~/automatizawpp-instagram/generate.py</code><br>
+      o, cuando se active el publicado, la API lo hace sola.
+    </div>
+  </aside>
+
+  <!-- FEED PREVIEW -->
+  <section class="feed-wrap">
+    <h2>Vista de cuadrícula (como se verá en el perfil)</h2>
+    <div class="feed" id="feed"></div>
+  </section>
+</div>
+
+<script>
+// ===== EL FEED (mismos contenidos que generate.py) =====
+const FEED = [
+  {label:"Automatización con IA", headline:"Tu WhatsApp no debería <em>dormir</em>.", sub:"IA que responde, vende y atiende mientras tú descansas.", cta:"", stat:""},
+  {label:"El problema", headline:"Cada mensaje sin responder es un <em>cliente perdido</em>.", sub:"El 70% de la gente compra a quien responde primero.", cta:"", stat:""},
+  {label:"Más ventas", headline:"Convierte chats en <em>ventas automáticas</em>.", sub:"De la primera pregunta al cierre, sin intervención manual.", cta:"", stat:""},
+  {label:"Disponible 24/7", headline:"Atención al cliente que <em>nunca para</em>.", sub:"Festivos, madrugadas y fines de semana. Siempre activo.", cta:"", stat:""},
+  {label:"El dato", headline:"de los WhatsApp se leen en los primeros <em>3 minutos</em>.", sub:"", cta:"", stat:"90%"},
+  {label:"Empieza ya", headline:"Empieza <em>gratis</em> hoy.", sub:"Configúralo en minutos. Sin tarjeta, sin compromiso.", cta:"Prueba gratis →", stat:""},
+];
+let current = 0;
+
+const BUBBLE = `<svg width="34" height="34" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6 2 11c0 2 .7 3.8 2 5.3L3 22l6-1.5c1 .3 2 .5 3 .5 5.5 0 10-4 10-9S17.5 2 12 2z" fill="#25D366"/></svg>`;
+
+function postHTML(p){
+  return `<div class="pframe">
+    <div><div class="ptop"><span class="pdot"></span><span class="plabel">${p.label}</span></div><div class="phair"></div></div>
+    <div class="phero">
+      ${p.stat?`<div class="pstat">${p.stat}</div>`:""}
+      <h1>${p.headline}</h1>
+      ${p.sub?`<p class="psub">${p.sub}</p>`:""}
+      ${p.cta?`<div class="pcta">${p.cta}</div>`:""}
+    </div>
+    <div class="pbrand">${BUBBLE}<span class="wm">automatiza<b>wpp</b></span><span class="tag">@automatizawpp</span></div>
+  </div>`;
+}
+
+function renderFeed(){
+  const feed = document.getElementById('feed');
+  feed.innerHTML = "";
+  FEED.forEach((p,i)=>{
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    const post = document.createElement('div');
+    post.className = 'post';
+    post.innerHTML = postHTML(p);
+    cell.appendChild(post);
+    feed.appendChild(cell);
+    // escalar el post 1080px al ancho real de la celda
+    const scale = cell.clientWidth / 1080;
+    post.style.transform = `scale(${scale})`;
+    if(i===current) cell.style.outline = "2px solid var(--green)";
+  });
+}
+
+function renderTabs(){
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = "";
+  FEED.forEach((_,i)=>{
+    const t = document.createElement('div');
+    t.className = 'tab'+(i===current?' active':'');
+    t.textContent = i+1;
+    t.onclick = ()=>{ current=i; loadForm(); renderTabs(); renderFeed(); };
+    tabs.appendChild(t);
+  });
+}
+
+function loadForm(){
+  const p = FEED[current];
+  f_label.value=p.label; f_headline.value=p.headline; f_sub.value=p.sub; f_cta.value=p.cta; f_stat.value=p.stat;
+}
+['f_label','f_headline','f_sub','f_cta','f_stat'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', e=>{
+    const key = id.slice(2);
+    FEED[current][key] = e.target.value;
+    renderFeed();
+  });
+});
+
+window.addEventListener('resize', renderFeed);
+renderTabs(); loadForm(); renderFeed();
+</script>
+</body>
+</html>
