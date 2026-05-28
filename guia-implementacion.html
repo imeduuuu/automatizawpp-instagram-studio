@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guía Paso a Paso · Automatización WhatsApp + Instagram</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --green:#25D366;--green-deep:#0E6B3C;--bg:#0A0F0D;--bg-2:#0F1614;
+  --surface:#141C19;--surface-2:#1B2520;--line:rgba(255,255,255,.08);
+  --text:#E8F1ED;--muted:#8FA39B;--gold:#D4B36A;--red:#FF6B6B;
+  --blue:#4FC3F7;--purple:#CE93D8;--orange:#FFB347;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(900px 700px at 90% -5%,rgba(37,211,102,.08),transparent 60%),
+  radial-gradient(700px 600px at -5% 40%,rgba(14,107,60,.07),transparent 60%)}
+
+.wrap{max-width:920px;margin:0 auto;padding:48px 52px 80px}
+@media(max-width:700px){.wrap{padding:28px 20px 60px}}
+
+/* HEADER */
+.doc-header{background:linear-gradient(135deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:20px;padding:36px 40px;margin-bottom:44px;display:flex;align-items:center;gap:20px}
+.dh-logo{width:50px;height:50px;border-radius:14px;background:linear-gradient(145deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px}
+.dh-text h1{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin-bottom:4px}
+.dh-text h1 em{font-style:normal;color:var(--green)}
+.dh-text p{font-size:13.5px;color:var(--muted)}
+
+/* BIG STEP */
+.phase{margin-bottom:52px}
+.phase-header{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.phase-num{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#04130b;flex-shrink:0}
+.phase-title{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700}
+.phase-title .time{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);margin-left:10px;font-weight:400}
+.phase-sub{font-size:13.5px;color:var(--muted);margin-bottom:20px;margin-left:60px}
+.phase-divider{height:1px;background:var(--line);margin-bottom:24px}
+
+/* STEP CARD */
+.step{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.step-header{padding:16px 20px;display:flex;align-items:flex-start;gap:14px;cursor:pointer}
+.step-num-small{width:28px;height:28px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);flex-shrink:0;margin-top:1px}
+.step-info{flex:1}
+.step-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:3px}
+.step-desc{font-size:13px;color:var(--muted)}
+.step-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.sbadge{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.sbadge.green{border-color:rgba(37,211,102,.3);color:var(--green);background:rgba(37,211,102,.06)}
+.sbadge.blue{border-color:rgba(79,195,247,.3);color:var(--blue);background:rgba(79,195,247,.06)}
+.sbadge.gold{border-color:rgba(212,179,106,.3);color:var(--gold);background:rgba(212,179,106,.06)}
+.sbadge.red{border-color:rgba(255,107,107,.3);color:var(--red);background:rgba(255,107,107,.06)}
+
+/* CODE BLOCK */
+.code-block{background:var(--bg-2);border-top:1px solid var(--line);padding:16px 20px 16px 62px}
+.code-block pre{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);line-height:1.9;overflow-x:auto;white-space:pre-wrap}
+.code-block pre .cmd{color:var(--green)}
+.code-block pre .comment{color:rgba(143,163,155,.5)}
+.code-block pre .key{color:var(--blue)}
+.code-block pre .val{color:var(--gold)}
+.code-block pre .warn{color:var(--red)}
+.code-block .cb-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px}
+
+/* CHECKLIST */
+.checklist{padding:16px 20px 16px 62px;border-top:1px solid var(--line)}
+.checklist ul{list-style:none}
+.checklist ul li{font-size:13.5px;color:var(--muted);padding:5px 0;display:flex;gap:10px;align-items:flex-start}
+.checklist ul li::before{content:"☐";color:var(--green);flex-shrink:0;font-size:14px;margin-top:1px}
+.checklist ul li strong{color:var(--text)}
+
+/* CALLOUT */
+.callout{border-left:3px solid var(--green);background:rgba(37,211,102,.06);border-radius:0 10px 10px 0;padding:13px 16px;margin:14px 0 0}
+.callout.warn{border-left-color:var(--gold);background:rgba(212,179,106,.06)}
+.callout.info{border-left-color:var(--blue);background:rgba(79,195,247,.06)}
+.callout.red{border-left-color:var(--red);background:rgba(255,107,107,.06)}
+.callout strong{font-size:13px;display:block;margin-bottom:3px}
+.callout p{font-size:12.5px;color:var(--muted)}
+
+/* PRINT */
+@media print{
+  body{background:#fff;color:#111}
+  body::before{display:none}
+  .doc-header,.step,.code-block,.checklist{background:#f9fbfa;border-color:#ddd;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .phase{page-break-inside:avoid}
+  .wrap{padding:20px 28px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="dh-logo">🚀</div>
+    <div class="dh-text">
+      <h1>Guía de Implementación <em>Paso a Paso</em></h1>
+      <p>Automatización completa WhatsApp + Instagram para Narosa Sweet Party · Desde cero hasta sistema funcionando · 21 días</p>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 0 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">0</div>
+      <div>
+        <div class="phase-title">Preparación previa <span class="time">· 1-2 días antes de empezar</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">Cosas que necesitas tener listas antes de instalar nada</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">0.1</div>
+        <div class="step-info">
+          <div class="step-title">Cuentas y credenciales necesarias</div>
+          <div class="step-desc">Crea o verifica estas cuentas antes del día 1. Algunas tardan en aprobarse.</div>
+          <div class="step-badges"><span class="sbadge">Requisito previo</span></div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li><strong>Número de teléfono para WhatsApp Business</strong> — puede ser el que ya usa Narosa (+34 640 92 16 71) o uno nuevo dedicado. Tener acceso físico al móvil para escanear el QR.</li>
+          <li><strong>Cuenta de Hetzner Cloud</strong> (hetzner.com) — tarjeta de crédito/débito para pagar el VPS (~6€/mes)</li>
+          <li><strong>Cuenta de Meta Developers</strong> (developers.facebook.com) — con Facebook personal vinculado a la página de negocio de Narosa</li>
+          <li><strong>Cuenta de Instagram Business</strong> — @narosasweetparty debe estar en modo "cuenta de empresa" y vinculada a una página de Facebook</li>
+          <li><strong>Cuenta de Anthropic (Claude API)</strong> (console.anthropic.com) — para la IA. Añadir saldo mínimo de 10€ para empezar</li>
+          <li><strong>Google Account</strong> — para Google Sheets CRM</li>
+          <li><strong>Dominio propio</strong> (opcional pero recomendado) — ej: bot.narosasp.com — desde Namecheap, GoDaddy o donde esté el dominio narosasp.com</li>
+        </ul>
+      </div>
+      <div class="callout warn" style="margin:0 20px 16px 62px">
+        <strong>Importante sobre Instagram</strong>
+        <p>La cuenta @narosasweetparty debe estar en "Cuenta profesional → Empresa" (no Creador). Ir a Instagram → Configuración → Cuenta → Cambiar a cuenta profesional → Empresa. Luego vincularla a la página de Facebook de Narosa en: Facebook → Configuración → Instagram → Conectar cuenta.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">0.2</div>
+        <div class="step-info">
+          <div class="step-title">Preparar el catálogo de productos</div>
+          <div class="step-desc">Lista de productos que la IA necesita conocer para responder consultas</div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Exportar catálogo de Shopify: Admin Shopify → Productos → Exportar → CSV. Tendrás nombre, precio y descripción de cada producto.</li>
+          <li>Crear un archivo <strong>catalogo-narosa.json</strong> con los productos más consultados (top 50-100 es suficiente para empezar)</li>
+          <li>Incluir: nombre del producto, precio, descripción corta, URL en narosasp.com, si hay stock (sí/no)</li>
+        </ul>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Ejemplo formato catalogo-narosa.json</div>
+        <pre><span class="comment">// Estructura mínima recomendada</span>
+[
+  {
+    <span class="key">"id"</span>: <span class="val">"globo-unicornio-kit"</span>,
+    <span class="key">"nombre"</span>: <span class="val">"Kit Globos Unicornio Completo"</span>,
+    <span class="key">"precio"</span>: <span class="val">18.90</span>,
+    <span class="key">"descripcion"</span>: <span class="val">"Kit con 15 globos, guirnalda y decoración temática unicornio"</span>,
+    <span class="key">"url"</span>: <span class="val">"https://narosasp.com/products/kit-unicornio"</span>,
+    <span class="key">"categoria"</span>: <span class="val">"kits-cumpleanos"</span>,
+    <span class="key">"stock"</span>: <span class="val">true</span>
+  }
+]</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 1 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div>
+        <div class="phase-title">Servidor VPS + Infraestructura <span class="time">· Días 1-2 · ~3h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">El servidor donde correrá todo el sistema. Solo necesitas hacer esto una vez.</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">1.1</div>
+        <div class="step-info">
+          <div class="step-title">Contratar VPS en Hetzner</div>
+          <div class="step-desc">El servidor que alojará Evolution API, n8n y Redis</div>
+          <div class="step-badges"><span class="sbadge gold">~6€/mes</span><span class="sbadge">hetzner.com</span></div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Ir a <strong>hetzner.com</strong> → Cloud → Nuevo servidor</li>
+          <li>Seleccionar: <strong>CX21</strong> (2 vCPU, 4GB RAM, 40GB SSD) — suficiente para todo</li>
+          <li>Sistema operativo: <strong>Ubuntu 22.04 LTS</strong></li>
+          <li>Región: <strong>Falkenstein o Nuremberg</strong> (la más cercana a España)</li>
+          <li>Añadir tu clave SSH o nota la contraseña root que te dan</li>
+          <li>Apuntar el dominio o subdominio (ej: <strong>bot.narosasp.com</strong>) a la IP del VPS en tu proveedor DNS</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">1.2</div>
+        <div class="step-info">
+          <div class="step-title">Configurar el servidor (Docker + Nginx + SSL)</div>
+          <div class="step-desc">Conectar al servidor por SSH e instalar los componentes base</div>
+          <div class="step-badges"><span class="sbadge blue">Terminal / SSH</span><span class="sbadge green">Copy-paste</span></div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Comandos SSH — ejecutar en orden (copy-paste exacto)</div>
+        <pre><span class="comment"># 1. Conectar al VPS</span>
+<span class="cmd">ssh root@TU-IP-DEL-VPS</span>
+
+<span class="comment"># 2. Actualizar el sistema</span>
+<span class="cmd">apt update && apt upgrade -y</span>
+
+<span class="comment"># 3. Instalar Docker</span>
+<span class="cmd">curl -fsSL https://get.docker.com | sh</span>
+<span class="cmd">systemctl enable docker && systemctl start docker</span>
+
+<span class="comment"># 4. Instalar Docker Compose</span>
+<span class="cmd">apt install docker-compose-plugin -y</span>
+
+<span class="comment"># 5. Instalar Nginx</span>
+<span class="cmd">apt install nginx -y</span>
+<span class="cmd">systemctl enable nginx</span>
+
+<span class="comment"># 6. Instalar Certbot (SSL gratuito)</span>
+<span class="cmd">apt install certbot python3-certbot-nginx -y</span>
+
+<span class="comment"># 7. Crear carpeta del proyecto</span>
+<span class="cmd">mkdir -p /opt/narosa-bot && cd /opt/narosa-bot</span></pre>
+      </div>
+      <div class="callout info" style="margin:0 20px 16px">
+        <strong>Verifica que el dominio apunta al VPS antes del SSL</strong>
+        <p>Ejecuta: <code style="background:rgba(255,255,255,.05);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px">ping bot.narosasp.com</code> y comprueba que responde con la IP de tu VPS. Si no, espera 15-30 min a que propague el DNS.</p>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Obtener certificado SSL (ejecutar cuando el DNS ya apunte al VPS)</div>
+        <pre><span class="cmd">certbot --nginx -d bot.narosasp.com</span>
+<span class="comment"># Introduce tu email cuando lo pida</span>
+<span class="comment"># Elige opción 2 (redirect HTTP → HTTPS)</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 2 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div>
+        <div class="phase-title">Evolution API — WhatsApp <span class="time">· Días 2-3 · ~2h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">Conectar el número de WhatsApp de Narosa al servidor para recibir y enviar mensajes automáticamente</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">2.1</div>
+        <div class="step-info">
+          <div class="step-title">Instalar Evolution API con Docker</div>
+          <div class="step-desc">La API open source que conecta WhatsApp al sistema</div>
+          <div class="step-badges"><span class="sbadge green">Gratis · Open source</span><span class="sbadge">github.com/EvolutionAPI</span></div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Crear docker-compose.yml para Evolution API</div>
+        <pre><span class="cmd">nano /opt/narosa-bot/docker-compose.yml</span>
+<span class="comment"># Pegar este contenido:</span>
+
+version: '3.8'
+services:
+  evolution-api:
+    image: atendai/evolution-api:latest
+    container_name: evolution_api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - <span class="key">SERVER_URL</span>=<span class="val">https://bot.narosasp.com</span>
+      - <span class="key">AUTHENTICATION_API_KEY</span>=<span class="val">TU-CLAVE-SECRETA-AQUI</span>
+      - <span class="key">AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES</span>=<span class="val">true</span>
+    volumes:
+      - evolution_data:/evolution/instances
+      - evolution_store:/evolution/store
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  evolution_data:
+  evolution_store:</pre>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Iniciar los servicios</div>
+        <pre><span class="cmd">cd /opt/narosa-bot && docker compose up -d</span>
+<span class="comment"># Verificar que están corriendo:</span>
+<span class="cmd">docker compose ps</span></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">2.2</div>
+        <div class="step-info">
+          <div class="step-title">Configurar Nginx para Evolution API</div>
+          <div class="step-desc">Proxy inverso para que el webhook sea accesible por HTTPS</div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Archivo Nginx para evolution API</div>
+        <pre><span class="cmd">nano /etc/nginx/sites-available/narosa-bot</span>
+<span class="comment"># Pegar:</span>
+
+server {
+    server_name bot.narosasp.com;
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+<span class="comment"># Activar y recargar:</span>
+<span class="cmd">ln -s /etc/nginx/sites-available/narosa-bot /etc/nginx/sites-enabled/</span>
+<span class="cmd">nginx -t && systemctl reload nginx</span></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">2.3</div>
+        <div class="step-info">
+          <div class="step-title">Conectar el número de WhatsApp (escanear QR)</div>
+          <div class="step-desc">El momento en que el número de Narosa queda vinculado al bot</div>
+          <div class="step-badges"><span class="sbadge red">Necesitas el móvil con WhatsApp</span></div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Abrir en el navegador: <strong>https://bot.narosasp.com/manager</strong></li>
+          <li>Autenticarse con la API Key que pusiste en el docker-compose</li>
+          <li>Crear nueva instancia: nombre <strong>"narosa"</strong></li>
+          <li>En el móvil con el WhatsApp de Narosa: Ajustes → Dispositivos vinculados → Vincular dispositivo</li>
+          <li>Escanear el QR que aparece en pantalla</li>
+          <li>El estado debe pasar a <strong>CONNECTED</strong> en verde</li>
+        </ul>
+      </div>
+      <div class="callout warn">
+        <strong>Importante: el móvil debe permanecer con batería y conexión</strong>
+        <p>El WhatsApp del móvil solo actúa como enlace. Para operación continua, asegúrate de que el teléfono no tenga ahorro de batería activado y tenga wifi o datos. Evolution API actúa como dispositivo vinculado de multi-device, así que el móvil no necesita estar activo constantemente, pero sí encendido y con conexión eventual.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 3 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div>
+        <div class="phase-title">n8n — Motor de automatización <span class="time">· Días 3-4 · ~2h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">n8n es el cerebro que conecta WhatsApp, la IA, el email y los Google Sheets</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">3.1</div>
+        <div class="step-info">
+          <div class="step-title">Añadir n8n al docker-compose</div>
+          <div class="step-desc">n8n se instala en el mismo servidor, junto a Evolution API</div>
+          <div class="step-badges"><span class="sbadge green">Gratis · Open source</span></div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Añadir al docker-compose.yml existente (dentro de services:)</div>
+        <pre>  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - <span class="key">N8N_HOST</span>=<span class="val">n8n.narosasp.com</span>  <span class="comment"># o usa bot.narosasp.com/n8n</span>
+      - <span class="key">N8N_PROTOCOL</span>=<span class="val">https</span>
+      - <span class="key">WEBHOOK_URL</span>=<span class="val">https://n8n.narosasp.com</span>
+      - <span class="key">N8N_BASIC_AUTH_ACTIVE</span>=<span class="val">true</span>
+      - <span class="key">N8N_BASIC_AUTH_USER</span>=<span class="val">admin</span>
+      - <span class="key">N8N_BASIC_AUTH_PASSWORD</span>=<span class="val">TU-PASSWORD-SEGURA</span>
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+<span class="comment"># En volumes: añadir:</span>
+  n8n_data:</pre>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Reiniciar con el nuevo servicio + Nginx para n8n</div>
+        <pre><span class="cmd">docker compose up -d n8n</span>
+
+<span class="comment"># Configurar Nginx para n8n (en el mismo archivo o uno nuevo):</span>
+<span class="comment"># Añadir server block para n8n.narosasp.com apuntando a puerto 5678</span>
+<span class="cmd">certbot --nginx -d n8n.narosasp.com</span></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">3.2</div>
+        <div class="step-info">
+          <div class="step-title">Crear el flujo principal en n8n (Workflow WhatsApp → IA → Respuesta)</div>
+          <div class="step-desc">El workflow que recibe mensajes de WA y los procesa con IA</div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Abrir <strong>https://n8n.narosasp.com</strong> en el navegador → entrar con usuario/contraseña</li>
+          <li>Clic en <strong>"New Workflow"</strong> → nombrar <strong>"Narosa WA → IA → Respuesta"</strong></li>
+          <li>Añadir nodo <strong>Webhook</strong>: método POST, path <strong>/wa-narosa</strong>. Copiar la URL del webhook.</li>
+          <li>En Evolution API: configurar webhook → URL: <code>https://n8n.narosasp.com/webhook/wa-narosa</code>, eventos: <strong>messages.upsert</strong></li>
+          <li>Añadir nodo <strong>IF</strong>: filtrar solo mensajes entrantes (no los que envía el bot)</li>
+          <li>Añadir nodo <strong>HTTP Request</strong> (a Claude API) → ver paso 3.3</li>
+          <li>Añadir nodo <strong>HTTP Request</strong> (a Evolution API sendMessage) para enviar la respuesta</li>
+          <li>Conectar los nodos en orden: Webhook → IF → Claude → sendMessage</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">3.3</div>
+        <div class="step-info">
+          <div class="step-title">Configurar la llamada a Claude API (la IA)</div>
+          <div class="step-desc">Nodo HTTP Request en n8n que llama a Anthropic para generar la respuesta</div>
+          <div class="step-badges"><span class="sbadge gold">Claude API key de console.anthropic.com</span></div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Configuración del nodo HTTP Request → Claude API en n8n</div>
+        <pre>URL: https://api.anthropic.com/v1/messages
+Método: POST
+Headers:
+  x-api-key: <span class="val">TU-CLAUDE-API-KEY</span>
+  anthropic-version: <span class="val">2023-06-01</span>
+  content-type: <span class="val">application/json</span>
+
+Body (JSON):
+{
+  <span class="key">"model"</span>: <span class="val">"claude-haiku-4-5-20251001"</span>,
+  <span class="key">"max_tokens"</span>: 400,
+  <span class="key">"system"</span>: <span class="val">"Eres Nara, la asistente de Narosa Sweet Party...</span>
+             <span class="val">[tu system prompt completo aquí]"</span>,
+  <span class="key">"messages"</span>: [
+    {
+      <span class="key">"role"</span>: <span class="val">"user"</span>,
+      <span class="key">"content"</span>: <span class="val">"{{ $json.body.data.message.conversation }}"</span>
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 4 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <div>
+        <div class="phase-title">Filtro de Leads + Email al equipo <span class="time">· Días 5-6 · ~3h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">Identificar clientes con intención de compra y notificar al equipo de Narosa por email</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">4.1</div>
+        <div class="step-info">
+          <div class="step-title">Añadir nodo de clasificación de intención</div>
+          <div class="step-desc">Después de que Claude responde, pedirle también que clasifique si el mensaje es un lead</div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Segunda llamada a Claude API — solo clasificación (muy barata)</div>
+        <pre><span class="comment"># En n8n, añadir un segundo nodo HTTP Request después del de respuesta:</span>
+Body:
+{
+  <span class="key">"model"</span>: <span class="val">"claude-haiku-4-5-20251001"</span>,
+  <span class="key">"max_tokens"</span>: 50,
+  <span class="key">"messages"</span>: [{
+    <span class="key">"role"</span>: <span class="val">"user"</span>,
+    <span class="key">"content"</span>: <span class="val">"Clasifica este mensaje en: LEAD_DECORACION / LEAD_COMPRA / INFO / SPAM.\nMensaje: {{ $json.body.data.message.conversation }}\nResponde SOLO con la categoría."</span>
+  }]
+}
+
+<span class="comment"># Añadir nodo IF después:</span>
+<span class="comment"># Si la respuesta contiene "LEAD_DECORACION" → rama lead decoración (email urgente)</span>
+<span class="comment"># Si contiene "LEAD_COMPRA" → rama lead compra (email normal)</span>
+<span class="comment"># Si es "INFO" → solo responde, no email</span></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">4.2</div>
+        <div class="step-info">
+          <div class="step-title">Configurar envío de email de lead</div>
+          <div class="step-desc">Usar el nodo Email de n8n o la integración con Gmail</div>
+          <div class="step-badges"><span class="sbadge green">Gmail gratis</span></div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>En n8n: Credenciales → Gmail → conectar con la cuenta de email de Narosa</li>
+          <li>Añadir nodo <strong>Gmail → Send Email</strong> en la rama de leads</li>
+          <li>Para: <strong>tiendapoblenou@narosasp.com</strong></li>
+          <li>Asunto: <strong>🎈 Nuevo lead {{ tipo_lead }} · {{ fecha_hora }}</strong></li>
+          <li>Cuerpo HTML: incluir nombre del contacto, número WA, mensaje original, clasificación y enlace a responder</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">4.3</div>
+        <div class="step-info">
+          <div class="step-title">Registrar lead en Google Sheets (CRM)</div>
+          <div class="step-desc">Todos los leads quedan guardados en una hoja de cálculo</div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Crear hoja de cálculo en Google Sheets: columnas → Fecha, Canal, Teléfono, Nombre, Mensaje, Tipo Lead, Estado</li>
+          <li>En n8n: Credenciales → Google Sheets → OAuth con tu cuenta de Google</li>
+          <li>Añadir nodo <strong>Google Sheets → Append Row</strong> en la rama de leads</li>
+          <li>Mapear cada columna con los datos del webhook de Evolution API</li>
+          <li>Estado inicial: <strong>"Nuevo"</strong> — el equipo lo cambia manualmente a "Contactado" o "Cerrado"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 5 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">5</div>
+      <div>
+        <div class="phase-title">Instagram DM (Meta API) <span class="time">· Días 8-13 · ~5h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">Automatizar los DMs de @narosasweetparty. Esta fase requiere aprobación de Meta (2-5 días hábiles)</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">5.1</div>
+        <div class="step-info">
+          <div class="step-title">Crear app en Meta Developers</div>
+          <div class="step-desc">La app es el puente oficial entre Instagram y tu servidor</div>
+          <div class="step-badges"><span class="sbadge red">Requiere página Facebook + cuenta empresa IG</span></div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Ir a <strong>developers.facebook.com</strong> → Mis Apps → Crear App</li>
+          <li>Tipo: <strong>"Empresa"</strong> → nombre: <strong>"Narosa Bot"</strong></li>
+          <li>Añadir producto: <strong>Instagram Graph API</strong> y <strong>Webhooks</strong></li>
+          <li>En Webhooks → Instagram → Suscribir a: <strong>messages</strong>, <strong>messaging_postbacks</strong></li>
+          <li>URL del webhook: <strong>https://n8n.narosasp.com/webhook/ig-narosa</strong></li>
+          <li>Token de verificación: una cadena secreta que tú defines (ej: <code>narosa2026secret</code>)</li>
+          <li>Vincular la página de Facebook de Narosa a la app y generar <strong>Page Access Token</strong> (permanente)</li>
+        </ul>
+      </div>
+      <div class="callout warn">
+        <strong>Tiempo de aprobación de Meta</strong>
+        <p>Las apps de Instagram Messaging necesitan revisión de Meta si quieres enviar mensajes proactivos. Para responder mensajes que el usuario inicia (el caso de Narosa), no necesitas aprobación especial — funciona con app en modo de desarrollo primero. Tras 30 días, solicitar modo producción.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">5.2</div>
+        <div class="step-info">
+          <div class="step-title">Crear workflow Instagram en n8n</div>
+          <div class="step-desc">Similar al de WhatsApp, pero con la API de Meta</div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Nodo Webhook en n8n para Instagram</div>
+        <pre>Path: /ig-narosa
+Método: GET + POST
+<span class="comment"># GET: para la verificación inicial de Meta (hub.challenge)</span>
+<span class="comment"># POST: para recibir los mensajes</span>
+
+<span class="comment"># Respuesta al GET de verificación (nodo Respond to Webhook):</span>
+<span class="comment"># Si hub.verify_token === "narosa2026secret" → responder hub.challenge</span>
+
+<span class="comment"># Payload POST que llega de Instagram:</span>
+{
+  entry[0].messaging[0].sender.id    → ID del usuario que escribe
+  entry[0].messaging[0].message.text → texto del mensaje
+}</pre>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Enviar respuesta por Instagram Graph API</div>
+        <pre>URL: https://graph.facebook.com/v19.0/me/messages
+Método: POST
+Params: access_token=<span class="val">TU_PAGE_ACCESS_TOKEN</span>
+Body:
+{
+  <span class="key">"recipient"</span>: { <span class="key">"id"</span>: <span class="val">"{{ sender_id }}"</span> },
+  <span class="key">"message"</span>: { <span class="key">"text"</span>: <span class="val">"{{ respuesta_de_claude }}"</span> }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 6 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">6</div>
+      <div>
+        <div class="phase-title">Flujo de encargo / lead de decoración <span class="time">· Días 7-8 · ~3h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">El flujo de mayor valor para Narosa: capturar leads de decoración de eventos (ticket 150-400€+)</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">6.1</div>
+        <div class="step-info">
+          <div class="step-title">Implementar formulario conversacional con estado</div>
+          <div class="step-desc">El bot hace preguntas en secuencia para recoger todos los datos del encargo</div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Lógica de estado conversacional (usando Redis como memoria)</div>
+        <pre><span class="comment"># En n8n, antes de llamar a Claude, consultar estado en Redis:</span>
+<span class="comment"># Nodo: HTTP Request → GET redis/session/{phone_number}</span>
+
+<span class="comment"># States del flujo de decoración:</span>
+<span class="val">null</span>         → primera vez, Claude responde normalmente
+<span class="val">"dec_fecha"</span>  → esperando la fecha del evento
+<span class="val">"dec_tipo"</span>   → esperando tipo y temática del evento
+<span class="val">"dec_lugar"</span>  → esperando dónde (domicilio o local)
+<span class="val">"dec_nombre"</span> → esperando nombre y teléfono de contacto
+<span class="val">"dec_done"</span>   → lead completo → email → reset estado
+
+<span class="comment"># Claude recibe el estado y su instrucción cambia según el estado:</span>
+system: <span class="val">"Estado actual: dec_tipo. El usuario ya dijo que la fiesta es el 20 de junio.</span>
+        <span class="val"> Ahora pregúntale cuál es la temática y si es a domicilio o en un local."</span></pre>
+      </div>
+      <div class="callout">
+        <strong>Alternativa sin Redis (más simple para empezar)</strong>
+        <p>n8n tiene variables de sesión propias en los workflows. Si el volumen es bajo (&lt;50 conversaciones simultáneas), puedes usar las variables del workflow sin necesidad de Redis. Más adelante se puede migrar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 7 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">7</div>
+      <div>
+        <div class="phase-title">Integración Shopify (stock en tiempo real) <span class="time">· Días 9-11 · ~4h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">Conectar narosasp.com al bot para responder preguntas de disponibilidad con datos reales</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">7.1</div>
+        <div class="step-info">
+          <div class="step-title">Obtener Shopify API key de narosasp.com</div>
+          <div class="step-desc">Desde el admin de Shopify crear una app privada con acceso de lectura</div>
+          <div class="step-badges"><span class="sbadge green">Solo lectura — no riesgo</span></div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Admin Shopify → Configuración → Apps → Desarrollar apps → Crear app</li>
+          <li>Nombre: <strong>"Narosa Bot"</strong></li>
+          <li>Permisos API Admin (solo lectura): <strong>read_products</strong>, <strong>read_inventory</strong>, <strong>read_orders</strong></li>
+          <li>Instalar app → copiar <strong>Admin API access token</strong></li>
+        </ul>
+      </div>
+      <div class="code-block">
+        <div class="cb-title">Consulta de producto desde n8n → Shopify API</div>
+        <pre>URL: https://narosasp.com/admin/api/2024-01/products.json?title={{ nombre_producto }}
+Headers:
+  X-Shopify-Access-Token: <span class="val">TU-SHOPIFY-TOKEN</span>
+
+<span class="comment"># La respuesta incluye: precio, stock, descripción, imágenes, URL</span>
+<span class="comment"># Pasas esa info a Claude como contexto para que responda con datos reales</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────────── FASE 8 ──── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">8</div>
+      <div>
+        <div class="phase-title">Tests, ajustes y lanzamiento <span class="time">· Días 14-21 · ~6h</span></div>
+      </div>
+    </div>
+    <div class="phase-sub">Verificar que todo funciona con mensajes reales antes de comunicar a los clientes</div>
+    <div class="phase-divider"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">8.1</div>
+        <div class="step-info">
+          <div class="step-title">Script de tests — mensajes que debes probar</div>
+          <div class="step-desc">Envía exactamente estos mensajes al WhatsApp de Narosa desde otro teléfono</div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>✉️ <strong>"Hola"</strong> → debe responder con bienvenida y menú de opciones</li>
+          <li>🎈 <strong>"¿Tenéis globos de unicornio?"</strong> → debe buscar en catálogo y responder con precio y enlace</li>
+          <li>🚚 <strong>"¿Enviáis a Madrid?"</strong> → debe responder política de envíos</li>
+          <li>🎉 <strong>"Quiero decorar la fiesta de cumpleaños de mi hijo"</strong> → debe iniciar el flujo de lead de decoración y pedir la fecha</li>
+          <li>⏰ <strong>Mensaje a las 22:00</strong> → debe responder aunque sea fuera de horario, con nota de horario</li>
+          <li>📍 <strong>"¿Dónde estáis?"</strong> → debe responder dirección + horario</li>
+          <li>📸 Probar mismo desde Instagram DM a @narosasweetparty</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num-small">8.2</div>
+        <div class="step-info">
+          <div class="step-title">Checklist de lanzamiento</div>
+          <div class="step-desc">Verificaciones finales antes de anunciar el sistema</div>
+        </div>
+      </div>
+      <div class="checklist">
+        <ul>
+          <li>Los emails de leads llegan a tiendapoblenou@narosasp.com en &lt;60 segundos</li>
+          <li>Los leads se registran correctamente en Google Sheets</li>
+          <li>El bot responde fuera del horario de la tienda (domingo, noche)</li>
+          <li>Las respuestas de Instagram DM funcionan con la Meta App en modo producción</li>
+          <li>El bot no envía spam si el cliente envía el mismo mensaje dos veces</li>
+          <li>Si el cliente escribe "hablar con persona", el bot escala y avisa al equipo</li>
+          <li>El catálogo de productos está actualizado con los precios correctos</li>
+          <li>Se ha hecho la formación de 1h con el equipo de Narosa</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout green" style="margin-top:16px">
+      <strong>Resultado esperado el día 21</strong>
+      <p>Sistema 100% operativo. WhatsApp de Narosa responde automáticamente 24/7. Los encargos de decoración llegan como leads al email del equipo en &lt;60 segundos. Instagram DMs respondidos en &lt;3 segundos. Coste total del sistema: ~108€/mes.</p>
+    </div>
+  </div>
+
+  <!-- RESUMEN RÁPIDO -->
+  <div style="background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px 32px;margin-bottom:40px">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:16px">Resumen de fases y tiempos</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div style="text-align:center;padding:14px;background:var(--surface-2);border-radius:10px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--green)">21</div>
+        <div style="font-size:12px;color:var(--muted)">días totales</div>
+      </div>
+      <div style="text-align:center;padding:14px;background:var(--surface-2);border-radius:10px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--gold)">~25h</div>
+        <div style="font-size:12px;color:var(--muted)">trabajo técnico</div>
+      </div>
+      <div style="text-align:center;padding:14px;background:var(--surface-2);border-radius:10px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--blue)">8</div>
+        <div style="font-size:12px;color:var(--muted)">fases</div>
+      </div>
+      <div style="text-align:center;padding:14px;background:var(--surface-2);border-radius:10px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--purple)">~108€</div>
+        <div style="font-size:12px;color:var(--muted)">coste mes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding-top:24px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted)">
+    automatiza<strong style="color:var(--green)">wpp</strong>.com · Guía Técnica v1.0 · Mayo 2026<br>
+    <span style="font-size:11px">Implementación para Narosa Sweet Party · narosasp.com</span>
+  </div>
+
+</div>
+</body>
+</html>
