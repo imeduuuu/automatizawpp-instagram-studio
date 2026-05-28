@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio del Proyecto · automatizawpp × Narosa Sweet Party</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --green: #25D366;
+  --green-deep: #0E6B3C;
+  --green-soft: rgba(37,211,102,.12);
+  --bg: #0A0F0D;
+  --bg-2: #0F1614;
+  --surface: #141C19;
+  --surface-2: #1B2520;
+  --line: rgba(255,255,255,.08);
+  --text: #E8F1ED;
+  --muted: #8FA39B;
+  --gold: #D4B36A;
+  --gold-soft: rgba(212,179,106,.10);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(900px 700px at 90% -5%, rgba(37,211,102,.09), transparent 55%),
+    radial-gradient(700px 600px at -5% 40%, rgba(14,107,60,.08), transparent 55%),
+    radial-gradient(600px 400px at 50% 100%, rgba(212,179,106,.05), transparent 60%);
+}
+
+/* ── COVER ─────────────────────────────── */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px 72px;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green-soft);
+  border: 1px solid rgba(37,211,102,.25);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.cover-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
+
+.cover h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(42px, 6vw, 80px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  max-width: 820px;
+  margin-bottom: 28px;
+}
+
+.cover h1 em { font-style: normal; color: var(--green); }
+.cover h1 span { color: var(--gold); }
+
+.cover .subtitle {
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 560px;
+  line-height: 1.65;
+  margin-bottom: 56px;
+}
+
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.meta-pill {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 13px;
+}
+
+.meta-pill strong { color: var(--green); display: block; font-size: 20px; font-family: 'Space Grotesk', sans-serif; }
+
+.cover-deco {
+  position: absolute;
+  right: 72px;
+  bottom: 60px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.cover-deco .logo-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, var(--green), var(--green-deep));
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── SECTIONS ───────────────────────────── */
+.section {
+  padding: 72px;
+  border-bottom: 1px solid var(--line);
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.section-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+
+.section-header h2 em { font-style: normal; color: var(--green); }
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+  margin-bottom: 6px;
+}
+
+.section-desc {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-bottom: 32px;
+}
+
+/* ── CARDS ──────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.cards.wide {
+  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--green), var(--green-deep));
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.card:hover { border-color: rgba(37,211,102,.3); }
+.card:hover::before { opacity: 1; }
+
+.card.gold-accent::before {
+  background: linear-gradient(90deg, var(--gold), transparent);
+  opacity: 1;
+}
+
+.card.gold-accent { border-color: rgba(212,179,106,.2); }
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.card-icon.green { background: var(--green-soft); }
+.card-icon.gold { background: var(--gold-soft); }
+.card-icon.blue { background: rgba(99,179,237,.10); }
+.card-icon.pink { background: rgba(255,107,157,.10); }
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.tag.green { background: var(--green-soft); color: var(--green); border-color: rgba(37,211,102,.25); }
+.tag.gold { background: var(--gold-soft); color: var(--gold); border-color: rgba(212,179,106,.25); }
+.tag.pink { background: rgba(255,107,157,.10); color: #ff6b9d; border-color: rgba(255,107,157,.25); }
+
+.card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+}
+
+.card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.card-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: var(--bg-2);
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.file-ext {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.file-ext.html { background: rgba(99,179,237,.15); color: #63b3ed; }
+.file-ext.pdf { background: rgba(255,107,107,.15); color: #ff6b6b; }
+
+.file-name {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text);
+  font-size: 12px;
+  flex: 1;
+}
+
+.file-size {
+  color: var(--muted);
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.card-points {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.point::before {
+  content: "▸";
+  color: var(--green);
+  font-size: 10px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ── STACK GRID ─────────────────────────── */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.stack-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stack-item .s-icon { font-size: 24px; }
+.stack-item .s-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; }
+.stack-item .s-role { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.stack-item .s-cost { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); margin-top: 4px; }
+
+/* ── TIMELINE ───────────────────────────── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--green), rgba(37,211,102,.1));
+}
+
+.tl-item {
+  display: flex;
+  gap: 28px;
+  padding: 24px 0;
+  position: relative;
+}
+
+.tl-item + .tl-item { border-top: 1px solid var(--line); }
+
+.tl-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 2px solid var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--green);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.tl-content { flex: 1; padding-top: 8px; }
+.tl-content h4 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.tl-content p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+.tl-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  padding-top: 10px;
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 90px;
+}
+
+/* ── COSTS TABLE ────────────────────────── */
+.costs-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.cost-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.cost-head {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cost-head .ch-icon { font-size: 22px; }
+.cost-head h3 { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; }
+.cost-head .ch-tag { margin-left: auto; }
+
+.cost-rows { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+
+.cost-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.cost-row:nth-child(odd) { background: var(--bg-2); }
+.cost-row .cr-label { color: var(--muted); }
+.cost-row .cr-val { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+.cost-row.total { background: var(--green-soft); border: 1px solid rgba(37,211,102,.2); }
+.cost-row.total .cr-label { color: var(--text); font-weight: 600; }
+.cost-row.total .cr-val { color: var(--green); font-size: 16px; }
+
+/* ── FOOTER ─────────────────────────────── */
+.footer {
+  padding: 48px 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-brand { display: flex; align-items: center; gap: 12px; }
+.footer-brand .logo { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(145deg, var(--green), var(--green-deep)); display: flex; align-items: center; justify-content: center; }
+.footer-brand h4 { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
+.footer-brand h4 b { color: var(--green); }
+
+.footer-info { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.footer-date { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+
+/* ── PRINT ──────────────────────────────── */
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff !important; color: #111 !important; }
+  body::before { display: none; }
+  :root {
+    --bg: #fff; --bg-2: #f5f5f5; --surface: #f8f8f8; --surface-2: #f0f0f0;
+    --line: rgba(0,0,0,.1); --text: #111; --muted: #555; --green: #0E6B3C;
+    --green-soft: rgba(14,107,60,.08); --gold: #8B6914; --gold-soft: rgba(139,105,20,.08);
+  }
+  .cover { min-height: auto; padding: 48px; page-break-after: always; }
+  .section { padding: 40px 48px; page-break-inside: avoid; }
+  .card { border: 1px solid #ddd; break-inside: avoid; }
+  .cover-deco { position: static; margin-top: 32px; }
+  .footer { padding: 32px 48px; }
+  body::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ PORTADA ════════════════════════════════════════════════════════ -->
+<section class="cover">
+  <div class="cover-badge">
+    <span class="dot"></span>
+    Dossier completo del proyecto
+  </div>
+
+  <h1>Automatización <em>WhatsApp & Instagram</em><br>para <span>Narosa Sweet Party</span></h1>
+
+  <p class="subtitle">
+    Propuesta técnica y comercial completa: auditoría, portfolio de servicios, planning de implementación, presupuesto formal y guía de autogestión DIY para la tienda de decoración de fiestas en Barcelona.
+  </p>
+
+  <div class="cover-meta">
+    <div class="meta-pill"><strong>9</strong> documentos entregables</div>
+    <div class="meta-pill"><strong>5</strong> PDFs generados</div>
+    <div class="meta-pill"><strong>4</strong> flujos automatizados</div>
+    <div class="meta-pill"><strong>21 días</strong> de implementación</div>
+    <div class="meta-pill"><strong>~7×</strong> ROI estimado</div>
+  </div>
+
+  <div class="cover-deco">
+    <div class="logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6 2 11c0 2 .7 3.8 2 5.3L3 22l6-1.5c1 .3 2 .5 3 .5 5.5 0 10-4 10-9S17.5 2 12 2z" fill="#fff"/></svg>
+    </div>
+    <div>
+      <div style="color:var(--text);font-weight:700">automatiza<span style="color:var(--green)">wpp</span></div>
+      <div>Generado: Mayo 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 1. DOCUMENTOS NAROSA (principal) ══════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-num">Bloque 01</div>
+      <h2>Entregables <em>Narosa</em> Sweet Party</h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-desc">
+    Documentación completa generada específicamente para el cliente Narosa Sweet Party (narosasp.com), tienda de globos y decoración de fiestas con 10+ años de trayectoria en Barcelona.
+  </p>
+
+  <div class="cards wide">
+
+    <!-- Auditoría -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon green">🔍</div>
+        <div class="card-tags">
+          <span class="tag green">Análisis</span>
+          <span class="tag">HTML</span>
+        </div>
+      </div>
+      <h3>Auditoría de Negocio</h3>
+      <p>Diagnóstico completo del negocio: análisis de canales, 7 tipos de mensajes con estimación de volumen, oportunidades de automatización, tabla de flujos prioritarios e impacto económico esperado.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">auditoria-narosa.html</span>
+          <span class="file-size">37 KB</span>
+        </div>
+      </div>
+      <div class="card-points">
+        <div class="point">4.8★ en Google · 266 reseñas · Shopify</div>
+        <div class="point">+34 640 92 16 71 · @narosasweetparty</div>
+        <div class="point">ROI estimado: ×7 · +800€/mes valor generado</div>
+        <div class="point">21 días de implementación en 3 fases</div>
+      </div>
+    </div>
+
+    <!-- Portfolio ventas -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon pink">💼</div>
+        <div class="card-tags">
+          <span class="tag pink">Ventas</span>
+          <span class="tag green">PDF</span>
+          <span class="tag">HTML</span>
+        </div>
+      </div>
+      <h3>Portfolio de Servicios</h3>
+      <p>Documento comercial de presentación con mockups de conversaciones reales (consulta producto WA, DM Instagram comunión, mensaje domingo por la noche), grid de servicios, precios y timeline de 21 días.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">portfolio-narosa.html</span>
+          <span class="file-size">28 KB</span>
+        </div>
+        <div class="file-row">
+          <span class="file-ext pdf">PDF</span>
+          <span class="file-name">portfolio-narosa.pdf</span>
+          <span class="file-size">155 KB</span>
+        </div>
+      </div>
+      <div class="card-points">
+        <div class="point">3 mockups de chat con mensajes reales de Narosa</div>
+        <div class="point">Bot "Nara" — asistente IA personalizada</div>
+        <div class="point">Planes Esencial (89€/mes) y Premium (149€/mes)</div>
+      </div>
+    </div>
+
+    <!-- Planning técnico -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon gold">⚙️</div>
+        <div class="card-tags">
+          <span class="tag gold">Técnico</span>
+          <span class="tag green">PDF</span>
+          <span class="tag">HTML</span>
+        </div>
+      </div>
+      <h3>Planning Técnico</h3>
+      <p>Arquitectura completa del sistema: stack tecnológico, 4 flujos de conversación detallados, clasificación de leads (P1/P2/P3), system prompt completo de la bot Nara, configuración de email y prioridades de instalación.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">planning-narosa.html</span>
+          <span class="file-size">34 KB</span>
+        </div>
+        <div class="file-row">
+          <span class="file-ext pdf">PDF</span>
+          <span class="file-name">planning-narosa.pdf</span>
+          <span class="file-size">232 KB</span>
+        </div>
+      </div>
+      <div class="card-points">
+        <div class="point">Flujo 1: Consulta producto → Shopify → respuesta</div>
+        <div class="point">Flujo 2: Petición presupuesto decoración evento</div>
+        <div class="point">Flujo 3: Lead decoración → email tiendapoblenou@</div>
+        <div class="point">Flujo 4: Instagram DM con Meta Graph API</div>
+      </div>
+    </div>
+
+    <!-- Presupuesto formal -->
+    <div class="card gold-accent">
+      <div class="card-header">
+        <div class="card-icon gold">📋</div>
+        <div class="card-tags">
+          <span class="tag gold">Comercial</span>
+          <span class="tag green">PDF</span>
+          <span class="tag">HTML</span>
+        </div>
+      </div>
+      <h3>Presupuesto Formal</h3>
+      <p>Propuesta económica oficial con datos reales del cliente, desglose de servicios, condiciones de pago 50/50, calendario de 3 semanas, módulos opcionales y bloques de firma.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">presupuesto-narosa.html</span>
+          <span class="file-size">24 KB</span>
+        </div>
+        <div class="file-row">
+          <span class="file-ext pdf">PDF</span>
+          <span class="file-name">presupuesto-narosa.pdf</span>
+          <span class="file-size">131 KB</span>
+        </div>
+      </div>
+      <div class="card-points">
+        <div class="point">Setup: 597€ + IVA = <strong style="color:var(--gold)">722,37€</strong></div>
+        <div class="point">Mensual: 89€ + IVA = <strong style="color:var(--gold)">107,69€/mes</strong></div>
+        <div class="point">Pago 50% firma · 50% entrega</div>
+        <div class="point">C/ María Aguiló 129, 08005 Barcelona</div>
+      </div>
+    </div>
+
+    <!-- Guía implementación técnica -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">🛠️</div>
+        <div class="card-tags">
+          <span class="tag">Técnico</span>
+          <span class="tag">HTML</span>
+          <span class="tag">8 fases</span>
+        </div>
+      </div>
+      <h3>Guía de Implementación</h3>
+      <p>Manual técnico completo para el implantador: VPS Hetzner, Docker, Evolution API, n8n, workflows, Nginx, SSL, Shopify y Meta webhook. Comandos exactos para copiar y pegar.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">guia-implementacion.html</span>
+          <span class="file-size">41 KB</span>
+        </div>
+      </div>
+      <div class="card-points">
+        <div class="point">Fase 1: Aprovisionamiento VPS Ubuntu 22.04</div>
+        <div class="point">Fase 2–4: Docker + Evolution API + WhatsApp QR</div>
+        <div class="point">Fase 5–6: n8n + workflows Claude API</div>
+        <div class="point">Fase 7–8: Shopify + Instagram Meta Graph API</div>
+      </div>
+    </div>
+
+    <!-- Guía DIY -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon green">🧰</div>
+        <div class="card-tags">
+          <span class="tag green">DIY</span>
+          <span class="tag green">PDF</span>
+          <span class="tag">HTML</span>
+        </div>
+      </div>
+      <h3>Guía DIY para el Propietario</h3>
+      <p>Si el dueño decide montarlo él mismo: prioridades de registro (Meta primero), pasos exactos plataforma a plataforma, docker-compose completo, workflow n8n, system prompt de Nara y coste mensual real.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">guia-diy-narosa.html</span>
+          <span class="file-size">67 KB</span>
+        </div>
+        <div class="file-row">
+          <span class="file-ext pdf">PDF</span>
+          <span class="file-name">guia-diy-narosa.pdf</span>
+          <span class="file-size">213 KB</span>
+        </div>
+      </div>
+      <div class="card-points">
+        <div class="point">Coste DIY: ~21€/mes (vs 108€/mes con servicio)</div>
+        <div class="point">0€ setup pero 35-40h de trabajo propio</div>
+        <div class="point">11 items priorizados · Día 1: Meta + Hetzner + Anthropic</div>
+        <div class="point">docker-compose.yml completo listo para usar</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 2. TEMPLATES GENÉRICOS ════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-num">Bloque 02</div>
+      <h2>Templates <em>Reutilizables</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-desc">
+    Documentos base adaptables a cualquier cliente (herbolario, tienda, restaurante, clínica…). Sirven como punto de partida para nuevas propuestas.
+  </p>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon green">📄</div>
+        <div class="card-tags"><span class="tag">Template</span><span class="tag">HTML</span></div>
+      </div>
+      <h3>Portfolio Genérico</h3>
+      <p>Portfolio de presentación de automatizawpp como agencia. Servicios, metodología, casos de uso y precios base. Personalizable para cualquier sector.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">portfolio.html</span>
+          <span class="file-size">27 KB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon gold">📊</div>
+        <div class="card-tags"><span class="tag">Template</span><span class="tag">HTML</span></div>
+      </div>
+      <h3>Planning Herbolario</h3>
+      <p>Planning técnico de ejemplo adaptado a tienda de herbolario: flujos de WhatsApp, Instagram, gestión de pedidos y leads. Base ideal para clientes de retail.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">planning-herbolario.html</span>
+          <span class="file-size">40 KB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon pink">💰</div>
+        <div class="card-tags"><span class="tag">Template</span><span class="tag">HTML</span></div>
+      </div>
+      <h3>Presupuesto Herbolario</h3>
+      <p>Plantilla de hoja de presupuesto con estructura de servicios, desglose de costes, condiciones de pago y bloques de firma. Adaptar datos del cliente en 5 minutos.</p>
+      <div class="card-files">
+        <div class="file-row">
+          <span class="file-ext html">HTML</span>
+          <span class="file-name">presupuesto-herbolario.html</span>
+          <span class="file-size">26 KB</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 3. STACK TECNOLÓGICO ══════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-num">Bloque 03</div>
+      <h2>Stack <em>Tecnológico</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-desc">
+    Componentes de la infraestructura de automatización. Todo open source o de pago por uso, sin licencias caras ni lock-in de proveedor.
+  </p>
+
+  <div class="stack-grid">
+    <div class="stack-item">
+      <div class="s-icon">🖥️</div>
+      <div class="s-name">Hetzner VPS</div>
+      <div class="s-role">CX21 · Ubuntu 22.04 · 2 vCPU · 4 GB RAM</div>
+      <div class="s-cost">~6€/mes</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">📱</div>
+      <div class="s-name">Evolution API</div>
+      <div class="s-role">WhatsApp Business · open source · Docker</div>
+      <div class="s-cost">Gratis</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">⚡</div>
+      <div class="s-name">n8n</div>
+      <div class="s-role">Orquestador de workflows · self-hosted</div>
+      <div class="s-cost">Gratis</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">🤖</div>
+      <div class="s-name">Claude API</div>
+      <div class="s-role">Haiku 4.5 · IA de respuestas · Anthropic</div>
+      <div class="s-cost">~15€/mes</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">🛒</div>
+      <div class="s-name">Shopify API</div>
+      <div class="s-role">Catálogo en tiempo real · Private App</div>
+      <div class="s-cost">Incluido</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">📸</div>
+      <div class="s-name">Meta Graph API</div>
+      <div class="s-role">Instagram DM · webhook · aprobación Meta</div>
+      <div class="s-cost">Gratis</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">🔴</div>
+      <div class="s-name">Redis</div>
+      <div class="s-role">Memoria de sesión · conversaciones activas</div>
+      <div class="s-cost">Gratis</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">📊</div>
+      <div class="s-name">Google Sheets</div>
+      <div class="s-role">CRM de leads · via n8n</div>
+      <div class="s-cost">Gratis</div>
+    </div>
+    <div class="stack-item">
+      <div class="s-icon">🔒</div>
+      <div class="s-name">Nginx + SSL</div>
+      <div class="s-role">Reverse proxy · Let's Encrypt · HTTPS</div>
+      <div class="s-cost">Gratis</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4. FLUJOS AUTOMATIZADOS ═══════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-num">Bloque 04</div>
+      <h2>Flujos <em>Automatizados</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-desc">
+    Los cuatro flujos principales implementados para Narosa Sweet Party, ordenados por impacto y prioridad de activación.
+  </p>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon green">🛍️</div>
+        <div class="card-tags"><span class="tag green">P1</span><span class="tag">WhatsApp</span></div>
+      </div>
+      <h3>Flujo 1 — Consulta de Producto</h3>
+      <p>Cliente pregunta por un producto → n8n llama Shopify API → Claude genera respuesta con precio y stock → WhatsApp envía respuesta inmediata 24/7.</p>
+      <div class="card-points">
+        <div class="point">Webhook WA → IF filtro spam → Shopify lookup</div>
+        <div class="point">Claude haiku-4-5 genera respuesta natural</div>
+        <div class="point">Respuesta en &lt;3 segundos · 24/7 sin intervención</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon gold">🎂</div>
+        <div class="card-tags"><span class="tag gold">P1</span><span class="tag">Lead</span></div>
+      </div>
+      <h3>Flujo 2 — Presupuesto Decoración</h3>
+      <p>Cliente pide presupuesto para evento → Claude extrae datos (tipo, fecha, personas, presupuesto) → Gmail envía lead calificado a tiendapoblenou@narosasp.com.</p>
+      <div class="card-points">
+        <div class="point">Clasificación: DECORACION / COMPRA / INFO / SPAM</div>
+        <div class="point">Email con datos del evento formateados</div>
+        <div class="point">Registro en Google Sheets CRM automático</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">💬</div>
+        <div class="card-tags"><span class="tag">WhatsApp</span><span class="tag">Info</span></div>
+      </div>
+      <h3>Flujo 3 — Horarios e Info</h3>
+      <p>Consultas sobre horarios, ubicación, talleres y FAQ → Claude responde con datos actualizados de la tienda. Desvía a humano si la consulta es compleja.</p>
+      <div class="card-points">
+        <div class="point">C/ María Aguiló 129, Poblenou Barcelona</div>
+        <div class="point">L-V 10-14 y 16-20 · S 10-14 · D cerrado</div>
+        <div class="point">Escalada a humano si intención ≠ detectada</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon pink">📸</div>
+        <div class="card-tags"><span class="tag pink">Instagram</span><span class="tag">Meta API</span></div>
+      </div>
+      <h3>Flujo 4 — Instagram DM</h3>
+      <p>DM entrante en @narosasweetparty → Meta webhook → n8n → Claude → respuesta via Graph API. Misma lógica de clasificación que WhatsApp, aprobación Meta requerida.</p>
+      <div class="card-points">
+        <div class="point">Meta app review: instagram_manage_messages</div>
+        <div class="point">Página Facebook + cuenta Instagram Business</div>
+        <div class="point">Tiempo aprobación Meta: 5-14 días hábiles</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 5. RESUMEN DE COSTES ═══════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-num">Bloque 05</div>
+      <h2>Resumen de <em>Costes</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="costs-block">
+
+    <div class="cost-card">
+      <div class="cost-head">
+        <div class="ch-icon">💼</div>
+        <h3>Servicio profesional</h3>
+        <span class="tag gold ch-tag">Recomendado</span>
+      </div>
+      <div class="cost-rows">
+        <div class="cost-row"><span class="cr-label">Setup (pagina + infra)</span><span class="cr-val">597€ + IVA</span></div>
+        <div class="cost-row"><span class="cr-label">IVA 21% setup</span><span class="cr-val">125,37€</span></div>
+        <div class="cost-row"><span class="cr-label">Mensualidad base</span><span class="cr-val">89€ + IVA</span></div>
+        <div class="cost-row"><span class="cr-label">IVA 21% mensual</span><span class="cr-val">18,69€</span></div>
+        <div class="cost-row"><span class="cr-label">Soporte incluido</span><span class="cr-val">Sí</span></div>
+        <div class="cost-row total"><span class="cr-label">TOTAL setup</span><span class="cr-val">722,37€</span></div>
+        <div class="cost-row total"><span class="cr-label">TOTAL mensual</span><span class="cr-val">107,69€/mes</span></div>
+      </div>
+    </div>
+
+    <div class="cost-card">
+      <div class="cost-head">
+        <div class="ch-icon">🧰</div>
+        <h3>Opción DIY propietario</h3>
+        <span class="tag ch-tag">35-40h trabajo</span>
+      </div>
+      <div class="cost-rows">
+        <div class="cost-row"><span class="cr-label">Setup propio</span><span class="cr-val">0€</span></div>
+        <div class="cost-row"><span class="cr-label">Hetzner CX21 VPS</span><span class="cr-val">~6€/mes</span></div>
+        <div class="cost-row"><span class="cr-label">Claude API (Haiku)</span><span class="cr-val">~15€/mes</span></div>
+        <div class="cost-row"><span class="cr-label">Evolution API</span><span class="cr-val">Gratis</span></div>
+        <div class="cost-row"><span class="cr-label">n8n self-hosted</span><span class="cr-val">Gratis</span></div>
+        <div class="cost-row"><span class="cr-label">Soporte incluido</span><span class="cr-val">No</span></div>
+        <div class="cost-row total"><span class="cr-label">TOTAL setup</span><span class="cr-val">0€</span></div>
+        <div class="cost-row total"><span class="cr-label">TOTAL mensual</span><span class="cr-val">~21€/mes</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 6. TIMELINE DEL PROYECTO ══════════════════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-num">Bloque 06</div>
+      <h2>Timeline del <em>Proyecto</em></h2>
+    </div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-content">
+        <h4>Auditoría e investigación</h4>
+        <p>Análisis del negocio, canales activos, volumen de mensajes estimado, identificación de flujos prioritarios y oportunidades de automatización para Narosa Sweet Party.</p>
+      </div>
+      <div class="tl-time">Completado</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2</div>
+      <div class="tl-content">
+        <h4>Documentación completa</h4>
+        <p>Portfolio, planning técnico, presupuesto formal, guía de implementación y guía DIY. 9 documentos generados (5 en PDF), listos para entregar al cliente.</p>
+      </div>
+      <div class="tl-time">Completado</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">3</div>
+      <div class="tl-content">
+        <h4>Semana 1 — Infraestructura</h4>
+        <p>Arranque del VPS Hetzner, instalación Docker, despliegue Evolution API, conexión WhatsApp Business (+34 640 92 16 71 via QR), n8n operativo con workflows base.</p>
+      </div>
+      <div class="tl-time">Días 1-7</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-content">
+        <h4>Semana 2 — Flujos WhatsApp + Shopify</h4>
+        <p>Configuración flujos WA (consultas, leads, info), integración Shopify Private App, bot Nara operativo en WhatsApp, primera ronda de pruebas con el cliente.</p>
+      </div>
+      <div class="tl-time">Días 8-14</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">5</div>
+      <div class="tl-content">
+        <h4>Semana 3 — Instagram + Entrega</h4>
+        <p>Activación Meta webhook Instagram DM (si aprobación completada), ajustes finales, documentación de accesos, formación al equipo y entrega oficial.</p>
+      </div>
+      <div class="tl-time">Días 15-21</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-brand">
+    <div class="logo">
+      <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6 2 11c0 2 .7 3.8 2 5.3L3 22l6-1.5c1 .3 2 .5 3 .5 5.5 0 10-4 10-9S17.5 2 12 2z" fill="#fff"/></svg>
+    </div>
+    <h4>automatiza<b>wpp</b></h4>
+  </div>
+  <div class="footer-info">
+    Proyecto: Automatización WhatsApp & Instagram · Cliente: Narosa Sweet Party<br>
+    narosasp.com · tiendapoblenou@narosasp.com · +34 640 92 16 71
+  </div>
+  <div class="footer-date">Mayo 2026<br>9 documentos · 5 PDFs</div>
+</footer>
+
+</body>
+</html>
