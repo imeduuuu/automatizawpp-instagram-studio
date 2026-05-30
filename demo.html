@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo · iPhone 17 Pro Automation · automatizawpp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500&family=Inter:wght@400;500&display=swap');
+:root{
+  --green:#25D366; --green-deep:#0E6B3C; --bg:#0A0F0D; --bg-2:#0F1614;
+  --surface:#141C19; --surface-2:#1B2520; --line:rgba(255,255,255,.08);
+  --text:#E8F1ED; --muted:#8FA39B; --gold:#D4B36A;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(900px 600px at 80% -10%,rgba(37,211,102,.12),transparent 60%),
+  radial-gradient(700px 500px at -10% 60%,rgba(14,107,60,.10),transparent 60%);}
+
+/* HEADER */
+header{display:flex;align-items:center;gap:14px;padding:22px 32px;border-bottom:1px solid var(--line)}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center}
+header h1{font-family:'Space Grotesk',sans-serif;font-size:22px}
+header h1 b{color:var(--green)}
+.badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);border:1px solid var(--green);padding:6px 12px;border-radius:999px;letter-spacing:.08em}
+
+/* LAYOUT */
+.stage{display:grid;grid-template-columns:1fr 320px 1fr;gap:40px;padding:48px 40px;align-items:center;min-height:calc(100vh - 73px)}
+@media(max-width:1000px){.stage{grid-template-columns:1fr;gap:32px;padding:32px 20px}}
+
+/* ───── IPHONE MOCKUP ───── */
+.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:20px}
+.phone-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
+.phone{
+  width:220px;height:460px;
+  background:linear-gradient(160deg,#1c1c1e,#2c2c2e);
+  border-radius:44px;
+  border:1.5px solid rgba(255,255,255,.12);
+  box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05) inset,0 1px 0 rgba(255,255,255,.15) inset;
+  position:relative;
+  overflow:hidden;
+}
+/* Dynamic Island */
+.island{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:90px;height:28px;background:#000;border-radius:20px;z-index:10;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+.island.expand{width:160px;height:36px}
+.island .cam{width:8px;height:8px;border-radius:50%;background:#1a1a1a;border:1px solid #333}
+.island .notif{font-size:9px;color:var(--green);font-family:'JetBrains Mono',monospace;opacity:0;transition:opacity .3s .1s;white-space:nowrap}
+.island.expand .notif{opacity:1}
+/* Screen */
+.screen{position:absolute;inset:0;border-radius:43px;overflow:hidden;background:var(--bg-2);display:flex;flex-direction:column}
+.screen-top{height:60px;background:linear-gradient(180deg,rgba(0,0,0,.4),transparent);display:flex;align-items:flex-end;padding:0 16px 8px;gap:8px}
+.app-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center;font-size:14px}
+.screen-content{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px}
+.shortcut-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s}
+.shortcut-card:hover{border-color:var(--green);background:rgba(37,211,102,.06)}
+.shortcut-card.active{border-color:var(--green);background:rgba(37,211,102,.10);box-shadow:0 0 20px rgba(37,211,102,.15)}
+.shortcut-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.shortcut-text{flex:1;min-width:0}
+.shortcut-text .name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shortcut-text .desc{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shortcut-arrow{font-size:10px;color:var(--muted)}
+/* Action Button */
+.action-btn-wrap{position:absolute;right:-6px;top:110px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.action-btn{
+  width:10px;height:54px;
+  background:linear-gradient(180deg,#3a3a3c,#2c2c2e);
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,.1);
+  cursor:pointer;
+  position:relative;
+  transition:all .15s;
+  box-shadow:2px 0 8px rgba(0,0,0,.4);
+}
+.action-btn::after{content:"";position:absolute;inset:3px;border-radius:4px;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent)}
+.action-btn:hover{background:linear-gradient(180deg,var(--green),var(--green-deep));box-shadow:2px 0 16px rgba(37,211,102,.4)}
+.action-btn:active{transform:translateX(1px)}
+.action-label{font-size:8px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg)}
+/* Volume buttons */
+.vol-btn{position:absolute;left:-7px;width:5px;border-radius:4px;background:#2c2c2e;border:1px solid rgba(255,255,255,.08)}
+.vol-up{top:100px;height:34px}
+.vol-dn{top:144px;height:34px}
+/* Camera bump */
+.camera-bump{position:absolute;top:16px;right:16px;width:64px;height:64px;background:rgba(0,0,0,.5);border-radius:18px;border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:28px}
+
+/* ───── FLOW CENTER ───── */
+.flow{display:flex;flex-direction:column;gap:0;align-items:center}
+.flow-title{font-family:'Space Grotesk',sans-serif;font-size:15px;color:var(--muted);margin-bottom:24px;text-align:center;letter-spacing:.04em;text-transform:uppercase}
+.step{display:flex;align-items:flex-start;gap:16px;width:100%;padding:14px 16px;border-radius:14px;transition:all .4s;opacity:.35}
+.step.active{opacity:1;background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.2)}
+.step.done{opacity:.7}
+.step.done .step-icon{background:linear-gradient(135deg,var(--green),var(--green-deep))}
+.step.done .step-num{display:none}
+.step.done .step-check{display:flex}
+.step-icon{width:38px;height:38px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .4s;font-size:16px;position:relative}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted)}
+.step-check{display:none;color:#04130b;font-size:14px;font-weight:700}
+.step-body{flex:1}
+.step-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.step-desc{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.connector{width:2px;height:20px;background:var(--line);margin:0 auto;transition:background .4s}
+.connector.done{background:var(--green)}
+
+/* Pulse loader */
+.pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-left:6px;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ───── IG PREVIEW ───── */
+.ig-wrap{display:flex;flex-direction:column;align-items:center;gap:20px}
+.ig-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
+.ig-phone{
+  width:220px;height:460px;
+  background:linear-gradient(160deg,#1c1c1e,#2c2c2e);
+  border-radius:44px;
+  border:1.5px solid rgba(255,255,255,.12);
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+  overflow:hidden;
+  position:relative;
+}
+.ig-island{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:90px;height:28px;background:#000;border-radius:20px;z-index:10}
+.ig-screen{position:absolute;inset:0;border-radius:43px;overflow:hidden;background:#000;display:flex;flex-direction:column}
+.ig-topbar{height:50px;background:#000;display:flex;align-items:flex-end;padding:0 14px 8px;gap:10px;border-bottom:1px solid #222}
+.ig-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#f8503e,#c13584);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.ig-username{font-size:11px;font-weight:700;color:#fff;font-family:'Inter',sans-serif}
+.ig-follow{margin-left:auto;font-size:10px;color:#0095f6;font-weight:700}
+.ig-post-wrap{flex:1;background:#111;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ig-post-img{width:100%;height:100%;object-fit:cover;transition:opacity .6s}
+.ig-post-overlay{position:absolute;inset:0;background:var(--bg);overflow:hidden;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
+/* mini post preview inside IG phone */
+.mini-post{width:100%;height:100%;position:relative;background:var(--bg)}
+.mini-post::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(200px 160px at 90% -5%,rgba(37,211,102,.25),transparent 60%),
+  radial-gradient(180px 140px at -5% 105%,rgba(212,179,106,.12),transparent 60%);}
+.mini-post .mp-frame{position:relative;z-index:2;height:100%;padding:18px;display:flex;flex-direction:column;justify-content:space-between}
+.mini-post .mp-top{display:flex;align-items:center;gap:6px}
+.mini-post .mp-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.mini-post .mp-label{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.mini-post h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;line-height:1.1;margin-top:6px}
+.mini-post h1 em{font-style:normal;color:var(--green)}
+.mini-post .mp-sub{font-size:8px;color:var(--muted);line-height:1.4;margin-top:4px}
+.mini-post .mp-brand{display:flex;align-items:center;gap:6px;font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700}
+.mini-post .mp-brand b{color:var(--green)}
+.ig-actions{height:44px;background:#000;display:flex;align-items:center;padding:0 12px;gap:14px;border-top:1px solid #1a1a1a}
+.ig-action-icon{font-size:16px;opacity:.7;cursor:pointer}
+.ig-action-icon:hover{opacity:1}
+.ig-likes{font-size:10px;color:#fff;font-weight:700;margin-top:2px;padding:0 12px}
+/* Published overlay */
+.published-overlay{position:absolute;inset:0;background:rgba(10,15,13,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .6s;pointer-events:none;border-radius:43px}
+.published-overlay.show{opacity:1}
+.published-check{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 40px rgba(37,211,102,.5)}
+.published-text{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--text);text-align:center}
+.published-sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-align:center}
+
+/* ───── CONTROLS ───── */
+.controls{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:16px;padding-top:8px}
+.btn-main{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;
+  padding:16px 48px;border-radius:14px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--green),var(--green-deep));
+  color:#04130b;
+  box-shadow:0 8px 32px rgba(37,211,102,.3);
+  transition:all .2s;
+}
+.btn-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 40px rgba(37,211,102,.4)}
+.btn-main:active:not(:disabled){transform:translateY(0)}
+.btn-main:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-reset{font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:underline;text-underline-offset:3px}
+.btn-reset:hover{color:var(--text)}
+.post-selector{display:flex;gap:8px;align-items:center}
+.post-selector span{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-right:4px}
+.post-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:12px;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.post-btn:hover{border-color:var(--green);color:var(--green)}
+.post-btn.sel{background:linear-gradient(135deg,var(--green),var(--green-deep));color:#04130b;border-color:transparent;font-weight:700}
+.log{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-align:center;min-height:18px;transition:all .3s}
+.log.ok{color:var(--green)}
+.log.err{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">
+    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6 2 11c0 2 .7 3.8 2 5.3L3 22l6-1.5c1 .3 2 .5 3 .5 5.5 0 10-4 10-9S17.5 2 12 2z" fill="#fff"/></svg>
+  </span>
+  <h1>Instagram <b>Studio</b> · <span style="color:var(--muted);font-weight:400;font-size:18px">Demo iPhone 17 Pro</span></h1>
+  <span class="badge">SIMULACIÓN</span>
+</header>
+
+<div class="stage">
+
+  <!-- iPhone 17 Pro -->
+  <div class="phone-wrap">
+    <div class="phone-label">iPhone 17 Pro</div>
+    <div class="phone" id="iphone">
+      <!-- Camera bump -->
+      <div class="camera-bump">📷</div>
+      <!-- Volume buttons -->
+      <div class="vol-btn vol-up"></div>
+      <div class="vol-btn vol-dn"></div>
+      <!-- Action Button -->
+      <div class="action-btn-wrap">
+        <div class="action-btn" id="actionBtn" title="Botón de acción — pulsa para publicar"></div>
+        <div class="action-label">Action</div>
+      </div>
+      <!-- Dynamic Island -->
+      <div class="island" id="island">
+        <div class="cam"></div>
+        <span class="notif" id="islandNotif"></span>
+      </div>
+      <!-- Screen -->
+      <div class="screen">
+        <div class="screen-top">
+          <div class="app-icon">⚡</div>
+          <span style="font-size:11px;font-weight:600">Atajos</span>
+        </div>
+        <div class="screen-content">
+          <div class="shortcut-card active" id="sc1">
+            <div class="shortcut-icon" style="background:linear-gradient(135deg,#25D366,#0E6B3C)">📸</div>
+            <div class="shortcut-text">
+              <div class="name">Publicar en Instagram</div>
+              <div class="desc">automatizawpp · post activo</div>
+            </div>
+            <div class="shortcut-arrow">›</div>
+          </div>
+          <div class="shortcut-card" id="sc2">
+            <div class="shortcut-icon" style="background:linear-gradient(135deg,#128C7E,#075E54)">🤖</div>
+            <div class="shortcut-text">
+              <div class="name">Activar Bot WhatsApp</div>
+              <div class="desc">modo negocio ON/OFF</div>
+            </div>
+            <div class="shortcut-arrow">›</div>
+          </div>
+          <div class="shortcut-card" id="sc3">
+            <div class="shortcut-icon" style="background:linear-gradient(135deg,#D4B36A,#a07c2e)">📊</div>
+            <div class="shortcut-text">
+              <div class="name">Ver analíticas</div>
+              <div class="desc">resumen del día</div>
+            </div>
+            <div class="shortcut-arrow">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;max-width:200px;line-height:1.5">
+      Pulsa el <span style="color:var(--green)">Botón de Acción</span> lateral o haz clic en<br>"Simular automatización" ↓
+    </div>
+  </div>
+
+  <!-- FLOW -->
+  <div class="flow">
+    <div class="flow-title">Flujo de automatización</div>
+
+    <div class="step" id="step1">
+      <div class="step-icon">
+        <span class="step-num">1</span>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="step-body">
+        <div class="step-name">Atajo disparado</div>
+        <div class="step-desc">Action Button → Shortcuts</div>
+      </div>
+    </div>
+    <div class="connector" id="conn1"></div>
+
+    <div class="step" id="step2">
+      <div class="step-icon">
+        <span class="step-num">2</span>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="step-body">
+        <div class="step-name">Selecciona post</div>
+        <div class="step-desc">imagen + caption listos</div>
+      </div>
+    </div>
+    <div class="connector" id="conn2"></div>
+
+    <div class="step" id="step3">
+      <div class="step-icon">
+        <span class="step-num">3</span>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="step-body">
+        <div class="step-name">Crea media container</div>
+        <div class="step-desc">POST /me/media → Graph API</div>
+      </div>
+    </div>
+    <div class="connector" id="conn3"></div>
+
+    <div class="step" id="step4">
+      <div class="step-icon">
+        <span class="step-num">4</span>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="step-body">
+        <div class="step-name">Publica en Instagram</div>
+        <div class="step-desc">POST /me/media_publish</div>
+      </div>
+    </div>
+    <div class="connector" id="conn4"></div>
+
+    <div class="step" id="step5">
+      <div class="step-icon">
+        <span class="step-num">5</span>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="step-body">
+        <div class="step-name">Notificación enviada</div>
+        <div class="step-desc">Dynamic Island · confirmado</div>
+      </div>
+    </div>
+
+    <div class="log" id="log" style="margin-top:16px">Listo para simular</div>
+  </div>
+
+  <!-- Instagram phone -->
+  <div class="ig-wrap">
+    <div class="ig-label">Instagram · resultado</div>
+    <div class="ig-phone">
+      <div class="ig-island"></div>
+      <div class="ig-screen">
+        <div class="ig-topbar">
+          <div class="ig-avatar">A</div>
+          <span class="ig-username">automatizawpp</span>
+          <span class="ig-follow">+ Seguir</span>
+        </div>
+        <div class="ig-post-wrap">
+          <div class="ig-post-overlay" id="igPost">
+            <div class="mini-post" id="miniPost">
+              <div class="mp-frame">
+                <div>
+                  <div class="mp-top"><span class="mp-dot"></span><span class="mp-label" id="mpLabel">Automatización con IA</span></div>
+                </div>
+                <div>
+                  <h1 id="mpHeadline">Tu WhatsApp no debería <em>dormir</em>.</h1>
+                  <p class="mp-sub" id="mpSub">IA que responde, vende y atiende mientras tú descansas.</p>
+                </div>
+                <div class="mp-brand">
+                  <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6 2 11c0 2 .7 3.8 2 5.3L3 22l6-1.5c1 .3 2 .5 3 .5 5.5 0 10-4 10-9S17.5 2 12 2z" fill="#25D366"/></svg>
+                  <span>automatiza<b>wpp</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Published overlay -->
+          <div class="published-overlay" id="publishedOverlay">
+            <div class="published-check">✓</div>
+            <div class="published-text">¡Publicado!</div>
+            <div class="published-sub" id="publishedSub">media_id: ig_<span id="mediaId"></span></div>
+          </div>
+        </div>
+        <div class="ig-likes" id="igLikes" style="display:none">❤️ 0 Me gusta</div>
+        <div class="ig-actions" id="igActions" style="display:none">
+          <span class="ig-action-icon">🤍</span>
+          <span class="ig-action-icon">💬</span>
+          <span class="ig-action-icon">📤</span>
+          <span style="margin-left:auto;font-size:10px;color:#555">···</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;max-width:200px;line-height:1.5">
+      El post aparece aquí<br>cuando la automatización termina
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="post-selector">
+      <span>Post:</span>
+      <button class="post-btn sel" onclick="selectPost(0)">1</button>
+      <button class="post-btn" onclick="selectPost(1)">2</button>
+      <button class="post-btn" onclick="selectPost(2)">3</button>
+      <button class="post-btn" onclick="selectPost(3)">4</button>
+      <button class="post-btn" onclick="selectPost(4)">5</button>
+      <button class="post-btn" onclick="selectPost(5)">6</button>
+    </div>
+    <button class="btn-main" id="runBtn" onclick="runDemo()">⚡ Simular automatización</button>
+    <button class="btn-reset" id="resetBtn" style="display:none" onclick="resetDemo()">Reiniciar demo</button>
+  </div>
+
+</div>
+
+<script>
+const FEED = [
+  {label:"Automatización con IA", headline:"Tu WhatsApp no debería <em>dormir</em>.", sub:"IA que responde, vende y atiende mientras tú descansas."},
+  {label:"El problema", headline:"Cada mensaje sin responder es un <em>cliente perdido</em>.", sub:"El 70% de la gente compra a quien responde primero."},
+  {label:"Más ventas", headline:"Convierte chats en <em>ventas automáticas</em>.", sub:"De la primera pregunta al cierre, sin intervención manual."},
+  {label:"Disponible 24/7", headline:"Atención al cliente que <em>nunca para</em>.", sub:"Festivos, madrugadas y fines de semana. Siempre activo."},
+  {label:"El dato", headline:"El <em>90%</em> de WhatsApp se lee en 3 minutos.", sub:"¿Hay alguien (o algo) para responder? Con automatizawpp, siempre."},
+  {label:"Empieza ya", headline:"Empieza <em>gratis</em> hoy.", sub:"Configúralo en minutos. Sin tarjeta, sin compromiso."},
+];
+
+let currentPost = 0;
+let running = false;
+
+function selectPost(idx) {
+  if (running) return;
+  currentPost = idx;
+  document.querySelectorAll('.post-btn').forEach((b,i) => b.classList.toggle('sel', i===idx));
+  const p = FEED[idx];
+  document.getElementById('mpLabel').textContent = p.label;
+  document.getElementById('mpHeadline').innerHTML = p.headline;
+  document.getElementById('mpSub').textContent = p.sub;
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function setStep(id, state) {
+  const el = document.getElementById(id);
+  el.classList.remove('active','done');
+  if (state) el.classList.add(state);
+}
+function setConn(id, done) {
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('done', done);
+}
+function setLog(msg, cls='') {
+  const el = document.getElementById('log');
+  el.textContent = msg;
+  el.className = 'log ' + cls;
+}
+
+document.getElementById('actionBtn').addEventListener('click', () => {
+  if (!running) runDemo();
+});
+
+async function runDemo() {
+  if (running) return;
+  running = true;
+  document.getElementById('runBtn').disabled = true;
+
+  // Reset visuals
+  for(let i=1;i<=5;i++) setStep('step'+i,'');
+  for(let i=1;i<=4;i++) setConn('conn'+i,false);
+  document.getElementById('publishedOverlay').classList.remove('show');
+  document.getElementById('igLikes').style.display='none';
+  document.getElementById('igActions').style.display='none';
+  document.getElementById('island').classList.remove('expand');
+  document.getElementById('islandNotif').textContent='';
+
+  setLog('Iniciando automatización…');
+  await sleep(400);
+
+  // Step 1
+  setStep('step1','active');
+  setLog('⚡ Action Button pulsado → Atajos ejecutándose…');
+  await sleep(900);
+  setStep('step1','done'); setConn('conn1',true);
+
+  // Step 2
+  setStep('step2','active');
+  setLog('📸 Seleccionando post ' + (currentPost+1) + ': "' + FEED[currentPost].label + '"');
+  await sleep(1000);
+  setStep('step2','done'); setConn('conn2',true);
+
+  // Step 3
+  setStep('step3','active');
+  setLog('🔗 POST /me/media → creando container en Graph API…');
+  await sleep(1400);
+  setStep('step3','done'); setConn('conn3',true);
+
+  // Step 4
+  setStep('step4','active');
+  setLog('🚀 POST /me/media_publish → publicando en Instagram…');
+  await sleep(1200);
+  setStep('step4','done'); setConn('conn4',true);
+
+  // Step 5 — notify
+  setStep('step5','active');
+  const fakeId = Math.random().toString(36).slice(2,10).toUpperCase();
+  document.getElementById('mediaId').textContent = fakeId;
+  setLog('✅ Publicado · media_id: ig_' + fakeId, 'ok');
+
+  // Dynamic Island notif
+  const island = document.getElementById('island');
+  island.classList.add('expand');
+  document.getElementById('islandNotif').textContent = '✓ Publicado';
+  await sleep(200);
+
+  // Show published on IG phone
+  document.getElementById('publishedOverlay').classList.add('show');
+  document.getElementById('publishedSub').querySelector('#mediaId').textContent = fakeId;
+  await sleep(600);
+  document.getElementById('igLikes').style.display='block';
+  document.getElementById('igActions').style.display='flex';
+
+  setStep('step5','done');
+  await sleep(3000);
+  island.classList.remove('expand');
+
+  document.getElementById('resetBtn').style.display='block';
+  running = false;
+}
+
+function resetDemo() {
+  document.getElementById('runBtn').disabled = false;
+  document.getElementById('resetBtn').style.display = 'none';
+  for(let i=1;i<=5;i++) setStep('step'+i,'');
+  for(let i=1;i<=4;i++) setConn('conn'+i,false);
+  document.getElementById('publishedOverlay').classList.remove('show');
+  document.getElementById('igLikes').style.display='none';
+  document.getElementById('igActions').style.display='none';
+  document.getElementById('island').classList.remove('expand');
+  document.getElementById('islandNotif').textContent='';
+  setLog('Listo para simular');
+}
+</script>
+</body>
+</html>
