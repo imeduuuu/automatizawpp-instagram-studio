@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bot WhatsApp en vivo · automatizawpp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap');
+:root{
+  --green:#25D366;--green-deep:#0E6B3C;--bg:#0A0F0D;--surface:#141C19;
+  --line:rgba(255,255,255,.08);--text:#E8F1ED;--muted:#8FA39B;--gold:#D4B36A;
+  --wa-bg:#0b141a;--wa-in:#202c33;--wa-out:#005c4b;--wa-bubble-in:#202c33;--wa-bubble-out:#005c4b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(800px 500px at 90% 0%,rgba(37,211,102,.09),transparent 60%),
+  radial-gradient(600px 400px at 0% 80%,rgba(14,107,60,.08),transparent 60%)}
+
+/* HEADER */
+header{display:flex;align-items:center;gap:14px;padding:18px 28px;border-bottom:1px solid var(--line);flex-shrink:0}
+.logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(145deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center}
+header h1{font-family:'Space Grotesk',sans-serif;font-size:19px}
+header h1 b{color:var(--green)}
+.live-badge{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--green);border:1px solid rgba(37,211,102,.3);padding:5px 12px;border-radius:999px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* MAIN LAYOUT */
+.main{flex:1;display:grid;grid-template-columns:280px 1fr 280px;gap:0;overflow:hidden;max-height:calc(100vh - 65px)}
+@media(max-width:900px){.main{grid-template-columns:1fr}}
+
+/* LEFT PANEL — Escenarios */
+.panel-left{border-right:1px solid var(--line);display:flex;flex-direction:column;background:var(--surface);overflow:hidden}
+.panel-title{padding:18px 20px 12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:'Space Grotesk',sans-serif;border-bottom:1px solid var(--line)}
+.scenarios{flex:1;overflow-y:auto;padding:10px}
+.scenario{padding:14px;border-radius:12px;cursor:pointer;transition:all .2s;border:1px solid transparent;margin-bottom:6px}
+.scenario:hover{background:rgba(255,255,255,.04);border-color:var(--line)}
+.scenario.active{background:rgba(37,211,102,.07);border-color:rgba(37,211,102,.25)}
+.sc-header{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.sc-icon{font-size:20px}
+.sc-name{font-size:13px;font-weight:600}
+.sc-tag{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4}
+.sc-pill{display:inline-block;font-size:9px;padding:2px 8px;border-radius:999px;margin-top:6px;font-weight:600}
+.pill-green{background:rgba(37,211,102,.15);color:var(--green)}
+.pill-gold{background:rgba(212,179,106,.15);color:var(--gold)}
+.pill-red{background:rgba(255,80,80,.12);color:#ff6b6b}
+
+/* CENTER — WhatsApp chat */
+.chat-wrap{display:flex;flex-direction:column;background:var(--wa-bg);position:relative;overflow:hidden}
+/* WA pattern background */
+.chat-wrap::before{content:"";position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M30 5C16.2 5 5 16.2 5 30s11.2 25 25 25 25-11.2 25-25S43.8 5 30 5zm0 4c11.6 0 21 9.4 21 21s-9.4 21-21 21S9 41.6 9 30 18.4 9 30 9z'/%3E%3C/g%3E%3C/svg%3E");background-size:60px}
+.chat-topbar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#1f2c34;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;z-index:2}
+.chat-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-deep));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.chat-info{flex:1}
+.chat-name{font-size:15px;font-weight:600;color:#e9edef}
+.chat-status{font-size:12px;color:#8696a0}
+.chat-actions{display:flex;gap:16px;color:#8696a0;font-size:18px}
+.messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:4px;z-index:1;position:relative}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+/* Date separator */
+.date-sep{text-align:center;margin:10px 0;font-size:11px;color:#8696a0}
+.date-sep span{background:#1f2c34;padding:4px 12px;border-radius:8px}
+/* Bubble */
+.bubble{max-width:68%;padding:7px 10px 6px;border-radius:8px;font-size:14px;line-height:1.45;color:#e9edef;position:relative;margin-bottom:1px;animation:popIn .2s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.95) translateY(4px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.bubble.in{background:var(--wa-bubble-in);align-self:flex-start;border-top-left-radius:2px}
+.bubble.out{background:var(--wa-bubble-out);align-self:flex-end;border-top-right-radius:2px}
+.bubble .time{font-size:10px;color:rgba(255,255,255,.45);float:right;margin-left:10px;margin-top:3px}
+.bubble.out .time::after{content:" ✓✓";color:#53bdeb}
+.bubble .sender{font-size:11px;font-weight:600;color:var(--green);margin-bottom:2px}
+/* Typing indicator */
+.typing{display:none;align-self:flex-start;background:var(--wa-bubble-in);padding:10px 14px;border-radius:8px;border-top-left-radius:2px}
+.typing.show{display:flex;gap:4px;align-items:center;animation:popIn .2s ease}
+.typing span{width:7px;height:7px;background:#8696a0;border-radius:50%;animation:typingDot 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes typingDot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+/* Chat input bar */
+.chat-input-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#1f2c34;flex-shrink:0;z-index:2}
+.chat-input{flex:1;background:#2a3942;border:none;border-radius:24px;padding:10px 16px;color:#e9edef;font-size:14px;font-family:'Inter',sans-serif;outline:none}
+.chat-input::placeholder{color:#8696a0}
+.chat-send{width:42px;height:42px;border-radius:50%;background:var(--green);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background .2s}
+.chat-send:hover{background:var(--green-deep)}
+
+/* RIGHT PANEL — Stats */
+.panel-right{border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--surface);overflow-y:auto}
+.panel-right .panel-title{padding:18px 20px 12px}
+.stats-section{padding:14px 18px;border-bottom:1px solid var(--line)}
+.stats-section h3{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;font-family:'Space Grotesk',sans-serif}
+.stat-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.stat-label{font-size:12px;color:var(--muted)}
+.stat-val{font-size:13px;font-weight:600;font-family:'Space Grotesk',sans-serif}
+.stat-val.green{color:var(--green)}
+.stat-val.gold{color:var(--gold)}
+/* Mini activity log */
+.activity{padding:14px 18px}
+.activity h3{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;font-family:'Space Grotesk',sans-serif}
+.activity-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:11px}
+.activity-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px}
+.activity-text{color:var(--muted);line-height:1.4}
+.activity-text b{color:var(--text)}
+/* Response time bar */
+.resp-bar-wrap{margin-top:14px}
+.resp-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px}
+.resp-bar{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.resp-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--green),var(--green-deep));transition:width 1s ease}
+/* Reset button */
+.btn-restart{margin:16px;padding:11px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-restart:hover{border-color:var(--green);color:var(--green)}
+
+@media(max-width:900px){
+  .panel-left,.panel-right{display:none}
+  .main{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">
+    <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6 2 11c0 2 .7 3.8 2 5.3L3 22l6-1.5c1 .3 2 .5 3 .5 5.5 0 10-4 10-9S17.5 2 12 2z" fill="#fff"/></svg>
+  </span>
+  <h1>automatiza<b>wpp</b> · Bot en vivo</h1>
+  <span class="live-badge"><span class="live-dot"></span>Bot activo 24/7</span>
+</header>
+
+<div class="main">
+
+  <!-- LEFT: Escenarios -->
+  <div class="panel-left">
+    <div class="panel-title">Elige un escenario</div>
+    <div class="scenarios">
+      <div class="scenario active" onclick="loadScenario(0)">
+        <div class="sc-header"><span class="sc-icon">🌙</span><span class="sc-name">Cliente a las 3am</span></div>
+        <div class="sc-tag">Consulta fuera de horario. El bot responde solo.</div>
+        <span class="sc-pill pill-green">Venta cerrada</span>
+      </div>
+      <div class="scenario" onclick="loadScenario(1)">
+        <div class="sc-header"><span class="sc-icon">💸</span><span class="sc-name">¿Cuánto cuesta?</span></div>
+        <div class="sc-tag">Cliente pide precios. El bot presenta planes y cierra.</div>
+        <span class="sc-pill pill-green">Conversión</span>
+      </div>
+      <div class="scenario" onclick="loadScenario(2)">
+        <div class="sc-header"><span class="sc-icon">😤</span><span class="sc-name">Cliente molesto</span></div>
+        <div class="sc-tag">Queja por servicio. El bot calma y escala.</div>
+        <span class="sc-pill pill-gold">Retención</span>
+      </div>
+      <div class="scenario" onclick="loadScenario(3)">
+        <div class="sc-header"><span class="sc-icon">🚀</span><span class="sc-name">Lead caliente</span></div>
+        <div class="sc-tag">Ya sabe lo que quiere. El bot cierra en 2 minutos.</div>
+        <span class="sc-pill pill-green">Cierre rápido</span>
+      </div>
+      <div class="scenario" onclick="loadScenario(4)">
+        <div class="sc-header"><span class="sc-icon">🤔</span><span class="sc-name">Muchas dudas</span></div>
+        <div class="sc-tag">Cliente indeciso con muchas preguntas.</div>
+        <span class="sc-pill pill-gold">Nurturing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: Chat -->
+  <div class="chat-wrap">
+    <div class="chat-topbar">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-info">
+        <div class="chat-name">automatizawpp</div>
+        <div class="chat-status" id="chatStatus">en línea</div>
+      </div>
+      <div class="chat-actions">
+        <span>🔍</span><span>⋮</span>
+      </div>
+    </div>
+    <div class="messages" id="messages">
+      <div class="date-sep"><span id="chatDate">Hoy · 03:14</span></div>
+    </div>
+    <div class="typing" id="typing">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="chat-input-bar">
+      <input class="chat-input" id="userInput" placeholder="Escribe un mensaje..." disabled>
+      <button class="chat-send" id="sendBtn" onclick="sendUserMessage()" disabled>➤</button>
+    </div>
+  </div>
+
+  <!-- RIGHT: Stats -->
+  <div class="panel-right">
+    <div class="panel-title">Panel del negocio</div>
+    <div class="stats-section">
+      <h3>Hoy en tiempo real</h3>
+      <div class="stat-row">
+        <span class="stat-label">Mensajes gestionados</span>
+        <span class="stat-val green" id="statMsg">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Tiempo de respuesta</span>
+        <span class="stat-val green">2 seg</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Leads capturados</span>
+        <span class="stat-val green" id="statLeads">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Ventas cerradas</span>
+        <span class="stat-val gold" id="statSales">0</span>
+      </div>
+      <div class="resp-bar-wrap">
+        <div class="resp-bar-label"><span>Tasa de respuesta</span><span style="color:var(--green)">100%</span></div>
+        <div class="resp-bar"><div class="resp-bar-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+    <div class="stats-section">
+      <h3>Sin automatización</h3>
+      <div class="stat-row">
+        <span class="stat-label">Mensajes perdidos</span>
+        <span class="stat-val" style="color:#ff6b6b" id="statLost">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Tiempo de respuesta</span>
+        <span class="stat-val" style="color:#ff6b6b">8+ horas</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Clientes perdidos</span>
+        <span class="stat-val" style="color:#ff6b6b" id="statLostC">0</span>
+      </div>
+    </div>
+    <div class="activity">
+      <h3>Actividad reciente</h3>
+      <div class="activity-item">
+        <div class="activity-icon" style="background:rgba(37,211,102,.12)">✓</div>
+        <div class="activity-text"><b>Bot activo</b> · esperando mensajes</div>
+      </div>
+      <div id="activityFeed"></div>
+    </div>
+    <button class="btn-restart" onclick="restartScenario()">↺ Reiniciar conversación</button>
+  </div>
+
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    title:"Cliente a las 3am",
+    date:"Hoy · 03:14",
+    isLead: true,
+    isSale: true,
+    messages:[
+      {role:"user", text:"Hola, vi tu publicación en Instagram. ¿Sigues vendiendo la automatización de WhatsApp?", delay:0},
+      {role:"bot",  text:"¡Hola! 👋 Sí, claro. Soy el asistente de *automatizawpp* — te respondo al instante, sea la hora que sea. 🟢\n\n¿Para qué tipo de negocio necesitas la automatización?", delay:1200},
+      {role:"user", text:"Tengo una tienda de ropa online. Recibo muchos mensajes pero no puedo atenderlos todos rápido", delay:0},
+      {role:"bot",  text:"Perfecto, es justo el caso que mejor manejamos. 👗\n\nNuestro bot para tiendas de ropa puede:\n✅ Responder consultas de tallas y stock\n✅ Enviar el catálogo automáticamente\n✅ Gestionar pedidos y pagos\n✅ Recordar carritos abandonados\n\n¿Quieres que te muestre cómo quedaría exactamente para tu tienda?", delay:1400},
+      {role:"user", text:"Sí, y ¿cuánto cuesta?", delay:0},
+      {role:"bot",  text:"El plan *Comercio* cuesta *49€/mes* e incluye:\n• Bot 24/7 ilimitado\n• Integración catálogo\n• Panel de analíticas\n• Soporte prioritario\n\nPrimeros *14 días gratis*, sin tarjeta. 🎁\n\n¿Te apunto para una demo personalizada mañana?", delay:1300},
+      {role:"user", text:"Sí perfecto, mañana me viene bien", delay:0},
+      {role:"bot",  text:"¡Genial! 🙌 Te he reservado una demo para mañana.\n\nTe llega confirmación en unos minutos. Mientras tanto, puedes ver cómo funciona en: *automatizawpp.com*\n\n¡Hasta mañana! 🚀", delay:1100},
+    ]
+  },
+  {
+    title:"¿Cuánto cuesta?",
+    date:"Hoy · 11:32",
+    isLead: true,
+    isSale: false,
+    messages:[
+      {role:"user", text:"Buenas, ¿cuánto cuesta el servicio?", delay:0},
+      {role:"bot",  text:"¡Buenas! 👋 Tenemos tres planes según el tamaño de tu negocio:\n\n🥉 *Básico* · 29€/mes → hasta 500 conversaciones\n🥈 *Pro* · 49€/mes → ilimitado + catálogo\n🥇 *Agencia* · 99€/mes → multi-cuenta + API\n\nTodos incluyen *14 días gratis*. ¿Cuál se adapta mejor a ti?", delay:1200},
+      {role:"user", text:"El pro me parece bien. ¿Qué incluye exactamente?", delay:0},
+      {role:"bot",  text:"El plan *Pro* incluye:\n\n✅ Bot 24/7 sin límite de conversaciones\n✅ Catálogo interactivo con carrito\n✅ Recordatorios automáticos de pago\n✅ Panel de analíticas en tiempo real\n✅ Integración con Instagram DMs\n✅ Soporte prioritario por WhatsApp\n\n¿Quieres empezar la prueba gratuita ahora mismo?", delay:1300},
+      {role:"user", text:"Dame el enlace para registrarme", delay:0},
+      {role:"bot",  text:"Aquí lo tienes 👇\n\n🔗 *automatizawpp.com/pro*\n\nEl registro tarda 2 minutos y tienes 14 días para probarlo sin cargo. Si tienes dudas durante la configuración, estoy aquí. ¡Suerte! 🚀", delay:900},
+    ]
+  },
+  {
+    title:"Cliente molesto",
+    date:"Ayer · 17:45",
+    isLead: false,
+    isSale: false,
+    messages:[
+      {role:"user", text:"Llevo 3 días intentando contactar con alguien y nadie me responde. Esto es una vergüenza", delay:0},
+      {role:"bot",  text:"Hola, entiendo tu frustración y te pido disculpas sinceras. 🙏 No debería haber pasado.\n\nSoy el asistente automático de *automatizawpp*. Para resolver esto hoy mismo, ¿me puedes decir tu número de cliente o el correo con el que te registraste?", delay:1100},
+      {role:"user", text:"info@mitienda.com. Tengo un problema con la facturación del mes pasado", delay:0},
+      {role:"bot",  text:"Gracias. He localizado tu cuenta. ✅\n\nVeo que hay una incidencia abierta con tu factura de abril. He escalado tu caso a prioridad *URGENTE* y un agente humano te contactará en menos de *2 horas* hoy.\n\nAdemás, como compensación por las molestias, te he añadido *1 mes gratis* a tu cuenta.\n\n¿Hay algo más que pueda hacer por ti ahora mismo?", delay:1600},
+      {role:"user", text:"Ok gracias, espero que me llamen pronto", delay:0},
+      {role:"bot",  text:"Te lo garantizo. 🤝 El agente tiene tu caso marcado como urgente y te llamará antes de las 20:00.\n\nTe envío un SMS de confirmación ahora. Disculpa de nuevo las molestias. ¡Hasta pronto! 💪", delay:1000},
+    ]
+  },
+  {
+    title:"Lead caliente",
+    date:"Hoy · 09:02",
+    isLead: true,
+    isSale: true,
+    messages:[
+      {role:"user", text:"Quiero contratar el plan Pro. ¿Cómo pago?", delay:0},
+      {role:"bot",  text:"¡Hola! 🔥 Perfecto, el plan *Pro* es el más popular.\n\nAceptamos:\n💳 Tarjeta (Visa/Mastercard)\n🏦 Transferencia bancaria\n💰 PayPal\n\n¿Cuál prefieres?", delay:800},
+      {role:"user", text:"Tarjeta. ¿El precio es 49€ al mes?", delay:0},
+      {role:"bot",  text:"Exacto, *49€/mes* (sin permanencia, cancelas cuando quieras).\n\nTe envío el enlace de pago seguro:\n\n🔗 *automatizawpp.com/checkout/pro*\n\nEn menos de 3 minutos tienes el bot activo. ¿Te surge alguna duda antes?", delay:900},
+      {role:"user", text:"No, perfecto. Gracias", delay:0},
+      {role:"bot",  text:"¡A por ello! 🚀 En cuanto completes el pago recibes acceso inmediato al panel.\n\nSi necesitas ayuda con la configuración inicial, escríbeme aquí. ¡Bienvenido a automatizawpp! 🟢", delay:700},
+    ]
+  },
+  {
+    title:"Muchas dudas",
+    date:"Hoy · 15:20",
+    isLead: true,
+    isSale: false,
+    messages:[
+      {role:"user", text:"Hola, ¿esto es un bot o una persona?", delay:0},
+      {role:"bot",  text:"¡Hola! 🤖 Soy un asistente automatizado de *automatizawpp*. Puedo resolver la mayoría de dudas al instante, y si necesitas hablar con una persona, te conecto enseguida.\n\n¿En qué te puedo ayudar?", delay:900},
+      {role:"user", text:"¿Y el bot se puede personalizar para mi negocio?", delay:0},
+      {role:"bot",  text:"¡Completamente! 🎨 Puedes personalizar:\n\n• El nombre y tono del bot (formal/cercano)\n• Los menús y respuestas automáticas\n• El catálogo de productos\n• Los horarios de atención\n• Los mensajes de bienvenida y despedida\n\n¿Tienes un tipo de negocio concreto en mente?", delay:1200},
+      {role:"user", text:"Sí, una clínica dental. ¿Puede gestionar citas?", delay:0},
+      {role:"bot",  text:"¡Perfecto para clínicas! 🦷 El bot puede:\n\n✅ Pedir citas automáticamente (con Google Calendar)\n✅ Enviar recordatorios 24h antes\n✅ Gestionar cancelaciones\n✅ Responder preguntas frecuentes (precios, tratamientos)\n✅ Recopilar datos del paciente antes de la cita\n\nTenemos una plantilla específica para clínicas. ¿Quieres verla?", delay:1400},
+      {role:"user", text:"Sí pero no sé si es demasiado técnico para mí", delay:0},
+      {role:"bot",  text:"Para nada 😊 No necesitas saber programación. El panel es visual — arrastras, sueltas y escribes los textos.\n\nAdemás, en el plan Pro incluimos *onboarding gratuito*: un técnico te ayuda a configurarlo todo en una videollamada de 30 minutos.\n\n¿Quieres que te reservemos esa sesión gratuita sin compromiso?", delay:1300},
+    ]
+  }
+];
+
+let currentScenario = 0;
+let msgCount = 0;
+let leads = 0;
+let sales = 0;
+let lostMsgs = 0;
+let lostClients = 0;
+let playing = false;
+let playTimeout = null;
+
+function loadScenario(idx) {
+  if (playing) return;
+  currentScenario = idx;
+  document.querySelectorAll('.scenario').forEach((s,i) => s.classList.toggle('active', i===idx));
+  restartScenario();
+}
+
+function restartScenario() {
+  clearTimeout(playTimeout);
+  playing = false;
+  const msgs = document.getElementById('messages');
+  const sc = SCENARIOS[currentScenario];
+  msgs.innerHTML = `<div class="date-sep"><span>${sc.date}</span></div>`;
+  document.getElementById('typing').classList.remove('show');
+  document.getElementById('chatStatus').textContent = 'en línea';
+  document.getElementById('userInput').disabled = true;
+  document.getElementById('sendBtn').disabled = true;
+  playScenario();
+}
+
+function sleep(ms){ return new Promise(r=>{playTimeout=setTimeout(r,ms);}); }
+
+function addBubble(role, text) {
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'bubble ' + (role==='user' ? 'out' : 'in');
+  const time = new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+  if(role==='bot') div.innerHTML = `<div class="sender">automatizawpp 🤖</div>`;
+  // Convert *bold* to <b>
+  const formatted = text.replace(/\*(.*?)\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+  div.innerHTML += formatted + `<span class="time">${time}</span>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function addActivity(icon, color, text) {
+  const feed = document.getElementById('activityFeed');
+  const item = document.createElement('div');
+  item.className = 'activity-item';
+  item.innerHTML = `<div class="activity-icon" style="background:${color}">${icon}</div><div class="activity-text">${text}</div>`;
+  feed.insertBefore(item, feed.firstChild);
+}
+
+async function playScenario() {
+  playing = true;
+  const sc = SCENARIOS[currentScenario];
+  const typing = document.getElementById('typing');
+  const msgs = document.getElementById('messages');
+
+  for(const msg of sc.messages) {
+    if(!playing) break;
+
+    if(msg.role === 'user') {
+      await sleep(msg.delay || 800);
+      if(!playing) break;
+      addBubble('user', msg.text);
+      msgCount++;
+      document.getElementById('statMsg').textContent = msgCount;
+      lostMsgs++;
+      lostClients = Math.floor(lostMsgs * 0.6);
+      document.getElementById('statLost').textContent = lostMsgs;
+      document.getElementById('statLostC').textContent = lostClients;
+    } else {
+      // show typing
+      await sleep(400);
+      if(!playing) break;
+      msgs.appendChild(typing);
+      typing.classList.add('show');
+      msgs.scrollTop = msgs.scrollHeight;
+      document.getElementById('chatStatus').textContent = 'escribiendo…';
+
+      const thinkTime = 900 + msg.text.length * 8;
+      await sleep(Math.min(thinkTime, 2000));
+      if(!playing) break;
+
+      typing.classList.remove('show');
+      document.getElementById('chatStatus').textContent = 'en línea';
+      addBubble('bot', msg.text);
+      msgCount++;
+      document.getElementById('statMsg').textContent = msgCount;
+
+      if(sc.isLead && leads === 0) {
+        leads = 1;
+        document.getElementById('statLeads').textContent = leads;
+        addActivity('🎯','rgba(37,211,102,.12)',`<b>Lead capturado</b> · ${sc.title}`);
+      }
+    }
+    await sleep(600);
+  }
+
+  if(playing && sc.isSale) {
+    sales++;
+    document.getElementById('statSales').textContent = sales;
+    addActivity('💰','rgba(212,179,106,.12)',`<b>Venta cerrada</b> · plan Pro · 49€`);
+  }
+
+  if(playing) {
+    document.getElementById('userInput').disabled = false;
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('userInput').focus();
+  }
+  playing = false;
+}
+
+// Allow user to type their own message
+async function sendUserMessage() {
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  addBubble('user', text);
+  msgCount++;
+  document.getElementById('statMsg').textContent = msgCount;
+
+  const typing = document.getElementById('typing');
+  const msgs = document.getElementById('messages');
+  msgs.appendChild(typing);
+  typing.classList.add('show');
+  msgs.scrollTop = msgs.scrollHeight;
+  document.getElementById('chatStatus').textContent = 'escribiendo…';
+
+  await sleep(1400);
+  typing.classList.remove('show');
+  document.getElementById('chatStatus').textContent = 'en línea';
+
+  const replies = [
+    "¡Entendido! 🙌 Déjame ver cómo puedo ayudarte con eso.\n\n¿Tienes ya cuenta en *automatizawpp* o estás evaluando el servicio?",
+    "Buena pregunta. 💡 Para darte la mejor respuesta, ¿me puedes contar un poco más sobre tu negocio?",
+    "Claro, con gusto te ayudo. ¿Prefieres que te explique los planes o quieres ir directo a la prueba gratuita?",
+    "Perfecto. Eso lo gestionamos sin problema. ¿Quieres que te envíe más información o prefieres una demo en directo?",
+  ];
+  addBubble('bot', replies[Math.floor(Math.random()*replies.length)]);
+}
+
+document.getElementById('userInput').addEventListener('keydown', e => {
+  if(e.key==='Enter' && !document.getElementById('sendBtn').disabled) sendUserMessage();
+});
+
+// Init
+loadScenario(0);
+</script>
+</body>
+</html>
