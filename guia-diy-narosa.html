@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guía DIY · Automatización Narosa Sweet Party</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --pink:#FF6B9D; --pink-dark:#C2185B; --pink-light:rgba(255,107,157,.11);
+  --green:#25D366; --green-dark:#0E6B3C;
+  --bg:#07050A; --bg2:#0D0A12; --surf:#15101E; --surf2:#1D1729;
+  --line:rgba(255,255,255,.07); --text:#F5EEF8; --muted:#9B8FAD;
+  --gold:#D4B36A; --blue:#7EC8E3; --orange:#FFB347; --red:#FF6B6B; --purple:#CE93D8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(800px 600px at 85% -10%,rgba(255,107,157,.08),transparent 55%),
+  radial-gradient(600px 500px at -5% 50%,rgba(194,24,91,.06),transparent 55%)}
+
+/* ── WRAPPER ── */
+.wrap{max-width:940px;margin:0 auto;padding:44px 52px 80px}
+@media(max-width:700px){.wrap{padding:24px 18px 60px}}
+
+/* ── PORTADA ── */
+.cover{background:linear-gradient(135deg,var(--surf),var(--surf2));border:1px solid rgba(255,107,157,.2);border-radius:22px;padding:40px 44px;margin-bottom:44px;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:start}
+@media(max-width:600px){.cover{grid-template-columns:1fr;padding:28px 24px}}
+.cover-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--pink);text-transform:uppercase;letter-spacing:.18em;margin-bottom:12px}
+.cover-title{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;line-height:1.15;margin-bottom:10px}
+.cover-title em{font-style:normal;color:var(--pink)}
+.cover-sub{font-size:13.5px;color:var(--muted);max-width:480px;line-height:1.65}
+.cover-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);line-height:2.2;text-align:right;flex-shrink:0}
+.cover-meta strong{color:var(--text);display:block;font-size:12px}
+
+/* ── COST SUMMARY BAR ── */
+.cost-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:44px}
+@media(max-width:700px){.cost-bar{grid-template-columns:1fr 1fr}}
+.cb-card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:16px 18px;text-align:center}
+.cb-card.accent{border-color:rgba(255,107,157,.25);background:rgba(255,107,157,.05)}
+.cb-num{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;line-height:1;margin-bottom:5px}
+.cb-label{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* ── PHASE / SECTION ── */
+.phase{margin-bottom:56px}
+.phase-header{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.phase-num{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--pink),var(--pink-dark));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#fff;flex-shrink:0}
+.phase-num.green{background:linear-gradient(135deg,var(--green),var(--green-dark))}
+.phase-num.gold{background:linear-gradient(135deg,var(--gold),#a07a30)}
+.phase-num.blue{background:linear-gradient(135deg,var(--blue),#3a8fa3)}
+.phase-num.purple{background:linear-gradient(135deg,var(--purple),#8e44ad)}
+.phase-num.orange{background:linear-gradient(135deg,var(--orange),#c47d00)}
+.phase-title{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700}
+.phase-time{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--pink);margin-left:10px;font-weight:400}
+.phase-sub{font-size:13.5px;color:var(--muted);margin-bottom:18px;margin-left:62px}
+.hr{height:1px;background:var(--line);margin-bottom:22px}
+
+/* ── STEP CARD ── */
+.step{background:var(--surf);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.step-head{padding:16px 20px;display:flex;align-items:flex-start;gap:14px}
+.step-dot{width:30px;height:30px;border-radius:8px;background:var(--surf2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--pink);flex-shrink:0;margin-top:2px}
+.step-info{flex:1}
+.step-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:3px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.55}
+.step-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.sb{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.sb.pink{border-color:rgba(255,107,157,.3);color:var(--pink);background:var(--pink-light)}
+.sb.green{border-color:rgba(37,211,102,.3);color:var(--green);background:rgba(37,211,102,.06)}
+.sb.gold{border-color:rgba(212,179,106,.3);color:var(--gold);background:rgba(212,179,106,.06)}
+.sb.red{border-color:rgba(255,107,107,.3);color:var(--red);background:rgba(255,107,107,.06)}
+.sb.blue{border-color:rgba(126,200,227,.3);color:var(--blue);background:rgba(126,200,227,.06)}
+
+/* ── CODE BLOCK ── */
+.code{background:var(--bg2);border-top:1px solid var(--line);padding:16px 20px 16px 64px}
+.code pre{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);line-height:1.9;white-space:pre-wrap;overflow-x:auto}
+.code pre .g{color:var(--green)}
+.code pre .p{color:var(--pink)}
+.code pre .b{color:var(--blue)}
+.code pre .o{color:var(--gold)}
+.code pre .r{color:var(--red)}
+.code pre .c{color:rgba(155,143,173,.4)}
+.code-label{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px}
+.url-pill{display:inline-flex;align-items:center;gap:6px;background:var(--surf2);border:1px solid rgba(255,107,157,.2);border-radius:8px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--pink);margin-top:8px;margin-left:64px}
+
+/* ── CHECKLIST ── */
+.checklist{padding:14px 20px 16px 64px;border-top:1px solid var(--line)}
+.checklist ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.checklist ul li{font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.checklist ul li .box{width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(255,107,157,.35);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:11px}
+.checklist ul li strong{color:var(--text)}
+.checklist ul li .note{font-size:12px;color:rgba(155,143,173,.65);margin-left:28px;margin-top:1px;display:block}
+
+/* ── WARNING / CALLOUT ── */
+.callout{border-left:3px solid var(--pink);background:rgba(255,107,157,.06);border-radius:0 10px 10px 0;padding:13px 18px;margin-bottom:12px}
+.callout.green{border-left-color:var(--green);background:rgba(37,211,102,.06)}
+.callout.warn{border-left-color:var(--gold);background:rgba(212,179,106,.06)}
+.callout.info{border-left-color:var(--blue);background:rgba(126,200,227,.06)}
+.callout.red{border-left-color:var(--red);background:rgba(255,107,107,.06)}
+.callout strong{font-size:13px;display:block;margin-bottom:4px}
+.callout p{font-size:12.5px;color:var(--muted);line-height:1.6}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}}
+
+/* ── COST TABLE ── */
+.ctable{width:100%;border-collapse:collapse;font-size:13.5px}
+.ctable thead tr{background:var(--surf2)}
+.ctable th{padding:10px 14px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--line)}
+.ctable th:last-child,.ctable td:last-child{text-align:right}
+.ctable td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.ctable tr:last-child td{border-bottom:none}
+.ctable tr:hover td{background:rgba(255,255,255,.012)}
+.ctable .cn{font-weight:500;margin-bottom:2px}
+.ctable .cd{font-size:12px;color:var(--muted)}
+.ctable .free{color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600}
+.ctable .price{font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--text)}
+.ctable .paid{color:var(--gold)}
+.totrow{background:var(--surf2)!important}
+.totrow td{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;padding:14px!important;border-top:2px solid rgba(255,107,157,.2)!important}
+
+/* ── FLOW ── */
+.flow-wrap{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:12px;overflow-x:auto}
+.flow-label{font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:600;margin-bottom:14px}
+.flow-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.fn{background:var(--surf2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:12px;text-align:center;min-width:105px;max-width:138px;line-height:1.4;flex-shrink:0}
+.fn.trig{border-color:var(--pink);color:var(--pink);background:rgba(255,107,157,.07)}
+.fn.act{border-color:var(--blue);color:var(--blue);background:rgba(126,200,227,.07)}
+.fn.dec{border-color:var(--gold);color:var(--gold);background:rgba(212,179,106,.07)}
+.fn.ok{border-color:var(--green);color:var(--green);background:rgba(37,211,102,.07)}
+.fn.mail{border-color:var(--orange);color:var(--orange);background:rgba(255,179,71,.07)}
+.fa{color:var(--muted);font-size:15px;padding:0 3px;flex-shrink:0}
+
+/* ── PRIO TABLE ── */
+.prio-table{width:100%;border-collapse:collapse;font-size:13px}
+.prio-table th{padding:9px 12px;text-align:left;background:var(--surf2);font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--line)}
+.prio-table td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.prio-table tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.b-p1{background:rgba(255,107,107,.12);color:var(--red);border:1px solid rgba(255,107,107,.25)}
+.b-p2{background:rgba(212,179,106,.12);color:var(--gold);border:1px solid rgba(212,179,106,.25)}
+.b-p3{background:rgba(126,200,227,.12);color:var(--blue);border:1px solid rgba(126,200,227,.25)}
+.b-p4{background:rgba(37,211,102,.12);color:var(--green);border:1px solid rgba(37,211,102,.25)}
+
+/* ── META TIMELINE ── */
+.meta-tl{display:flex;flex-direction:column;gap:0}
+.meta-item{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.meta-item:last-child{border-bottom:none}
+.meta-day{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--pink);width:60px;flex-shrink:0;padding-top:2px;text-transform:uppercase}
+.meta-content .mt{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;margin-bottom:3px}
+.meta-content .ms{font-size:13px;color:var(--muted)}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff;color:#111}
+  body::before{display:none}
+  *{background-color:#f9f5f8!important;border-color:#ddd!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cover-title em,.phase-time,.cover-tag{color:#C2185B!important}
+  .phase{page-break-inside:avoid}
+  .wrap{padding:20px 28px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- PORTADA -->
+<div class="cover">
+  <div>
+    <div class="cover-tag">🎈 Guía para el propietario · Narosa Sweet Party</div>
+    <div class="cover-title">Automatiza <em>tú mismo</em><br>WhatsApp e Instagram<br>de Narosa</div>
+    <div class="cover-sub">Paso a paso completo — desde crear la cuenta en Hetzner hasta tener el bot respondiendo en tu +34 640 92 16 71 y en @narosasweetparty. Sin saber programar. Sin pagar a nadie. Solo tu tiempo y ~21€/mes.</div>
+  </div>
+  <div class="cover-meta">
+    <strong>narosasp.com</strong>
+    Guía DIY v1.0<br>
+    Mayo 2026<br>
+    Tiempo total: ~35-40h<br>
+    Plazo: 21-30 días
+  </div>
+</div>
+
+<!-- RESUMEN DE COSTES -->
+<div class="cost-bar">
+  <div class="cb-card accent">
+    <div class="cb-num" style="color:var(--pink)">0€</div>
+    <div class="cb-label">Coste de setup<br>(solo tu tiempo)</div>
+  </div>
+  <div class="cb-card">
+    <div class="cb-num" style="color:var(--gold)">~21€</div>
+    <div class="cb-label">Coste mensual<br>total del sistema</div>
+  </div>
+  <div class="cb-card">
+    <div class="cb-num" style="color:var(--green)">35-40h</div>
+    <div class="cb-label">Horas de trabajo<br>para montarlo todo</div>
+  </div>
+  <div class="cb-card accent">
+    <div class="cb-num" style="color:var(--blue)">21 días</div>
+    <div class="cb-label">Plazo estimado<br>hasta sistema activo</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECCIÓN A — PRIORIDADES Y ORDEN
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num" style="background:linear-gradient(135deg,#FF6B6B,#C62828)">!</div>
+    <div>
+      <div class="phase-title">Tabla de prioridades — qué hacer primero</div>
+    </div>
+  </div>
+  <div class="phase-sub">Lee esto antes de empezar. El orden importa: algunas cosas tardan días en aprobarse (Meta) y debes solicitarlas desde el primer día aunque no las necesites aún.</div>
+  <div class="hr"></div>
+
+  <div class="callout red">
+    <strong>⚠️ Empieza por Meta el DÍA 1, aunque lo vayas a usar en la semana 3</strong>
+    <p>La app de Meta para Instagram Messaging puede tardar entre 2 y 10 días hábiles en ser revisada y aprobada. Si esperas a hacerlo cuando "toque", retrasas todo el proyecto. Créala el primer día y déjala en revisión mientras instalas el resto.</p>
+  </div>
+
+  <table class="prio-table" style="background:var(--surf);border:1px solid var(--line);border-radius:14px;overflow:hidden;width:100%">
+    <thead><tr><th>Orden</th><th>Qué hacer</th><th>Plataforma</th><th>Tiempo</th><th>Coste</th><th>Depende de</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge b-p1">1 · HOY</span></td>
+        <td><strong>Crear app en Meta Developers</strong><br><span style="font-size:12px;color:var(--muted)">Para IG DM — empieza la revisión cuanto antes</span></td>
+        <td style="color:var(--muted);font-size:12px">developers.facebook.com</td>
+        <td style="color:var(--muted)">1h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">Facebook personal</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p1">2 · HOY</span></td>
+        <td><strong>Dar de alta en Hetzner · contratar VPS</strong><br><span style="font-size:12px;color:var(--muted)">El servidor donde corre todo</span></td>
+        <td style="color:var(--muted);font-size:12px">hetzner.com</td>
+        <td style="color:var(--muted)">30min</td>
+        <td style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:12px">6€/mes</td>
+        <td style="color:var(--muted);font-size:12px">Tarjeta crédito/débito</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p1">3 · HOY</span></td>
+        <td><strong>Crear cuenta en Anthropic (Claude API)</strong><br><span style="font-size:12px;color:var(--muted)">La IA que responde los mensajes</span></td>
+        <td style="color:var(--muted);font-size:12px">console.anthropic.com</td>
+        <td style="color:var(--muted)">15min</td>
+        <td style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:12px">~15€/mes</td>
+        <td style="color:var(--muted);font-size:12px">Email + tarjeta</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p2">4 · Día 2</span></td>
+        <td><strong>Configurar servidor + instalar Docker</strong><br><span style="font-size:12px;color:var(--muted)">Preparar la máquina para todo lo demás</span></td>
+        <td style="color:var(--muted);font-size:12px">SSH al VPS</td>
+        <td style="color:var(--muted)">3h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">Hetzner activo</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p2">5 · Día 3</span></td>
+        <td><strong>Instalar Evolution API + conectar WA por QR</strong><br><span style="font-size:12px;color:var(--muted)">Vincular el +34 640 92 16 71 al servidor</span></td>
+        <td style="color:var(--muted);font-size:12px">VPS + Docker</td>
+        <td style="color:var(--muted)">2h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">VPS configurado</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p2">6 · Día 3-4</span></td>
+        <td><strong>Instalar n8n + primer workflow WhatsApp</strong><br><span style="font-size:12px;color:var(--muted)">El motor que conecta todo</span></td>
+        <td style="color:var(--muted);font-size:12px">VPS + Docker</td>
+        <td style="color:var(--muted)">4h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">Evolution activo</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p2">7 · Día 5-6</span></td>
+        <td><strong>Conectar Claude API + probar respuestas IA</strong><br><span style="font-size:12px;color:var(--muted)">Primer mensaje respondido automáticamente</span></td>
+        <td style="color:var(--muted);font-size:12px">n8n + API</td>
+        <td style="color:var(--muted)">3h</td>
+        <td style="color:var(--muted);font-size:12px">—</td>
+        <td style="color:var(--muted);font-size:12px">n8n + API key</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p3">8 · Día 7-9</span></td>
+        <td><strong>Shopify API privada + catálogo en el bot</strong><br><span style="font-size:12px;color:var(--muted)">Stock y precios reales de narosasp.com</span></td>
+        <td style="color:var(--muted);font-size:12px">Admin Shopify</td>
+        <td style="color:var(--muted)">3h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">n8n funcionando</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p3">9 · Día 9-11</span></td>
+        <td><strong>Flujo de encargos + leads al email</strong><br><span style="font-size:12px;color:var(--muted)">El bot recoge datos y te los manda</span></td>
+        <td style="color:var(--muted);font-size:12px">n8n + Gmail</td>
+        <td style="color:var(--muted)">5h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">Shopify + n8n</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p3">10 · Día 12-14</span></td>
+        <td><strong>Google Sheets CRM de leads</strong><br><span style="font-size:12px;color:var(--muted)">Registro automático de cada lead</span></td>
+        <td style="color:var(--muted);font-size:12px">Google Sheets API</td>
+        <td style="color:var(--muted)">2h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">n8n + Gmail</td>
+      </tr>
+      <tr>
+        <td><span class="badge b-p4">11 · Día 15-20</span></td>
+        <td><strong>Activar Instagram DM (si Meta aprobó la app)</strong><br><span style="font-size:12px;color:var(--muted)">@narosasweetparty responde DMs</span></td>
+        <td style="color:var(--muted);font-size:12px">Meta API + n8n</td>
+        <td style="color:var(--muted)">4h</td>
+        <td style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12px">Gratis</td>
+        <td style="color:var(--muted);font-size:12px">App Meta aprobada</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 1 — META (HACER HOY)
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num" style="background:linear-gradient(135deg,#1877F2,#0d5fc4)">M</div>
+    <div>
+      <div class="phase-title">FASE 1 · Meta Developers — Hacerlo HOY<span class="phase-time">· ~1h · Gratis</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">Aunque no lo vayas a usar hasta la semana 3, el proceso de revisión de Meta puede tardar hasta 10 días. Créalo ahora y déjalo en cola.</div>
+  <div class="hr"></div>
+
+  <div class="callout warn">
+    <strong>Requisito previo: Instagram en modo "Empresa"</strong>
+    <p>Antes de crear la app, @narosasweetparty debe estar en modo empresa (no creador) y vinculada a una página de Facebook.<br><strong>Cómo hacerlo:</strong> Instagram → Configuración → Tipo de cuenta → Cambiar a cuenta profesional → Empresa. Luego en Facebook: Configuración → Instagram → Conectar cuenta.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">1.1</div>
+      <div class="step-info">
+        <div class="step-title">Crear cuenta en Meta Developers</div>
+        <div class="step-desc">Entra con tu Facebook personal (el que gestiona la página de Narosa)</div>
+        <div class="step-badges"><span class="sb pink">developers.facebook.com</span><span class="sb">15 minutos</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>Ir a <strong>developers.facebook.com</strong> → "Comenzar"<span class="note">Inicia sesión con el Facebook que administra la página de Narosa Sweet Party</span></div></li>
+        <li><span class="box">☐</span><div>Verificar tu cuenta de desarrollador con tu número de teléfono</div></li>
+        <li><span class="box">☐</span><div>Ir a <strong>"Mis Apps"</strong> → <strong>"Crear app"</strong></div></li>
+        <li><span class="box">☐</span><div>Seleccionar tipo: <strong>"Empresa"</strong> (no "Consumidor")<span class="note">Este tipo es el que permite Instagram Messaging</span></div></li>
+        <li><span class="box">☐</span><div>Nombre de la app: <strong>"NarosaBot"</strong> · Email de contacto: el tuyo</div></li>
+        <li><span class="box">☐</span><div>En el dashboard de la app → <strong>"Añadir producto"</strong> → selecciona <strong>"Instagram Graph API"</strong> y <strong>"Webhooks"</strong></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">1.2</div>
+      <div class="step-info">
+        <div class="step-title">Configurar permisos de Instagram Messaging</div>
+        <div class="step-desc">Solicitar los permisos necesarios para leer y enviar DMs desde @narosasweetparty</div>
+        <div class="step-badges"><span class="sb red">Requiere revisión de Meta (2-10 días)</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>En tu app → <strong>Revisión de la app</strong> → <strong>Permisos y funciones</strong></div></li>
+        <li><span class="box">☐</span><div>Solicitar: <strong>instagram_manage_messages</strong> → clic en "Solicitar acceso avanzado"<span class="note">Este permiso es el que permite responder DMs — es el que tarda en aprobarse</span></div></li>
+        <li><span class="box">☐</span><div>Solicitar también: <strong>pages_messaging</strong>, <strong>instagram_basic</strong></div></li>
+        <li><span class="box">☐</span><div>En la sección <strong>"Modo de la app"</strong>: dejarla en <strong>Desarrollo</strong> por ahora (puedes probar con cuentas tuyas)</div></li>
+        <li><span class="box">☐</span><div>Vincular tu página de Facebook de Narosa: <strong>Instagram Graph API → Configuración básica → Añadir página</strong></div></li>
+        <li><span class="box">☐</span><div>Generar un <strong>Token de acceso de página</strong> (Page Access Token) → guardarlo en un lugar seguro<span class="note">Este token es el que usará n8n para enviar mensajes por Instagram</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">1.3</div>
+      <div class="step-info">
+        <div class="step-title">Configurar el Webhook de Instagram (cuando tengas el servidor)</div>
+        <div class="step-desc">Esta parte la completas en la Fase 4, cuando ya tengas n8n instalado. Apunta los datos ahora.</div>
+        <div class="step-badges"><span class="sb">Completar en Fase 4</span></div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-label">Datos que necesitarás cuando configures el webhook</div>
+      <pre><span class="b">URL del webhook:</span>  https://bot.narosasp.com/webhook/ig-narosa
+<span class="b">Token verificación:</span> narosa2026<span class="c"> (puedes cambiarlo, guárdalo)</span>
+<span class="b">Eventos a suscribir:</span> messages, messaging_postbacks
+<span class="b">Page Access Token:</span> el que generaste en el paso 1.2</pre>
+    </div>
+  </div>
+
+  <div class="callout green" style="margin-top:4px">
+    <strong>¿Cuánto tarda Meta en aprobar?</strong>
+    <p>Para responder mensajes que el usuario inicia (alguien te escribe primero), en muchos casos no necesitas aprobación especial — funciona en modo desarrollo desde el primer día para cuentas que hayas añadido como testers. La aprobación completa es para enviar mensajes proactivos. Úsalo en modo desarrollo mientras tanto.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 2 — HETZNER VPS
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num" style="background:linear-gradient(135deg,#d50000,#8b0000)">H</div>
+    <div>
+      <div class="phase-title">FASE 2 · Contratar VPS en Hetzner<span class="phase-time">· ~30min · 6€/mes</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">El servidor donde vivirá todo el sistema. Hetzner es fiable, barato y con servidores en Europa.</div>
+  <div class="hr"></div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">2.1</div>
+      <div class="step-info">
+        <div class="step-title">Crear cuenta y contratar el servidor CX21</div>
+        <div class="step-badges"><span class="sb pink">hetzner.com</span><span class="sb gold">6€/mes</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>Ir a <strong>hetzner.com</strong> → Cloud → "Crear proyecto"<span class="note">Nombre del proyecto: "narosa-bot"</span></div></li>
+        <li><span class="box">☐</span><div>Clic en <strong>"Añadir servidor"</strong></div></li>
+        <li><span class="box">☐</span><div>Región: <strong>Falkenstein (FSN1)</strong> — la más rápida desde España</div></li>
+        <li><span class="box">☐</span><div>Imagen: <strong>Ubuntu 22.04 LTS</strong></div></li>
+        <li><span class="box">☐</span><div>Tipo: <strong>CX21</strong> (2 vCPU, 4 GB RAM, 40 GB SSD) — 5,83€/mes<span class="note">No necesitas más para empezar. Puedes escalar después si el volumen de mensajes crece mucho.</span></div></li>
+        <li><span class="box">☐</span><div>En "Claves SSH": si no sabes qué es, elige <strong>"Contraseña"</strong> y Hetzner te enviará la contraseña root por email</div></li>
+        <li><span class="box">☐</span><div>Clic en <strong>"Crear y comprar"</strong> → apunta la <strong>IP del servidor</strong> que aparece</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">2.2</div>
+      <div class="step-info">
+        <div class="step-title">Apuntar el subdominio bot.narosasp.com a la IP del servidor</div>
+        <div class="step-desc">Esto es para que el webhook de WhatsApp y Meta tengan una URL con HTTPS</div>
+        <div class="step-badges"><span class="sb">Donde gestiones el DNS de narosasp.com</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>Entra al panel donde gestionas el dominio narosasp.com (Shopify, GoDaddy, Cloudflare, etc.)</div></li>
+        <li><span class="box">☐</span><div>Añadir registro DNS: <strong>Tipo A · Nombre: bot · Valor: [IP de tu VPS Hetzner]</strong><span class="note">Ejemplo: si tu IP es 65.21.100.200 → el registro sería: A / bot / 65.21.100.200</span></div></li>
+        <li><span class="box">☐</span><div>TTL: 300 (5 minutos) o el mínimo que permita</div></li>
+        <li><span class="box">☐</span><div>Esperar 15-30 minutos y verificar: abrir terminal (Mac) o CMD (Windows) y escribir: <code style="background:var(--surf2);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px">ping bot.narosasp.com</code> → debe responder con la IP de Hetzner</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">2.3</div>
+      <div class="step-info">
+        <div class="step-title">Conectarte al servidor por SSH y configurarlo</div>
+        <div class="step-desc">Desde el terminal de tu ordenador (o usa Termius/PuTTY en Windows)</div>
+        <div class="step-badges"><span class="sb blue">Copiar y pegar — no hace falta saber programar</span></div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-label">Paso 1 — Conectar al servidor (cambia TU-IP por la IP de Hetzner)</div>
+      <pre><span class="g">ssh root@TU-IP-DEL-SERVIDOR</span>
+<span class="c"># Te pedirá la contraseña que te envió Hetzner por email</span>
+<span class="c"># La primera vez te pregunta "Are you sure?" → escribe: yes</span></pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Paso 2 — Instalar Docker y herramientas (copiar TODO esto de una vez)</div>
+      <pre><span class="g">apt update && apt upgrade -y</span>
+<span class="g">curl -fsSL https://get.docker.com | sh</span>
+<span class="g">systemctl enable docker && systemctl start docker</span>
+<span class="g">apt install -y docker-compose-plugin nginx certbot python3-certbot-nginx</span>
+<span class="g">mkdir -p /opt/narosa && cd /opt/narosa</span>
+<span class="c"># Si todo va bien, verás mensajes de "instalando..." sin errores en rojo</span></pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Paso 3 — Obtener certificado SSL gratuito (HTTPS)</div>
+      <pre><span class="c"># ⚠️  Solo ejecutar cuando el DNS ya apunte al servidor (paso 2.2)</span>
+<span class="g">certbot --nginx -d bot.narosasp.com</span>
+<span class="c"># Te pide tu email → escríbelo</span>
+<span class="c"># "Would you like to redirect?" → escribe 2 (redirect)</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 3 — ANTHROPIC / CLAUDE API
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num purple">AI</div>
+    <div>
+      <div class="phase-title">FASE 3 · Claude API — La inteligencia artificial<span class="phase-time">· ~15min · ~15€/mes</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">La IA que entenderá las preguntas de tus clientes y generará respuestas inteligentes sobre tu catálogo.</div>
+  <div class="hr"></div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">3.1</div>
+      <div class="step-info">
+        <div class="step-title">Crear cuenta en Anthropic y obtener API key</div>
+        <div class="step-badges"><span class="sb pink">console.anthropic.com</span><span class="sb gold">~15€/mes uso estimado</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>Ir a <strong>console.anthropic.com</strong> → "Sign Up"</div></li>
+        <li><span class="box">☐</span><div>Registrarse con el email de Narosa (tiendapoblenou@narosasp.com o uno tuyo)</div></li>
+        <li><span class="box">☐</span><div>Verificar el email y completar el registro</div></li>
+        <li><span class="box">☐</span><div>Ir a <strong>Billing → Add credit</strong> → añadir <strong>20€</strong> de saldo inicial (te durará 1-2 meses)</div></li>
+        <li><span class="box">☐</span><div>Ir a <strong>API Keys</strong> → <strong>"Create key"</strong> → nombre: "narosa-bot"</div></li>
+        <li><span class="box">☐</span><div>Copiar la clave que empieza por <code style="background:var(--surf2);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px">sk-ant-...</code> y guardarla en un archivo seguro<span class="note">⚠️ Solo se muestra una vez. Si la pierdes, tendrás que crear otra.</span></div></li>
+      </ul>
+    </div>
+    <div class="code">
+      <div class="code-label">Modelo a usar en el código (el más barato y rápido)</div>
+      <pre><span class="o">claude-haiku-4-5-20251001</span>   <span class="c">← usa este · ~0.25$/M tokens de entrada</span>
+<span class="c"># Para 600 conversaciones/mes de Narosa → estimado: 8-15€/mes</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 4 — EVOLUTION API (WHATSAPP)
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num green">WA</div>
+    <div>
+      <div class="phase-title">FASE 4 · Evolution API — Conectar WhatsApp<span class="phase-time">· ~2h · Gratis</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">Vincula el número +34 640 92 16 71 al servidor. El móvil seguirá funcionando igual, pero también responderá automáticamente.</div>
+  <div class="hr"></div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">4.1</div>
+      <div class="step-info">
+        <div class="step-title">Crear el archivo docker-compose.yml con Evolution API + Redis</div>
+        <div class="step-desc">Este archivo define los servicios que se ejecutarán en el servidor</div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-label">En el servidor SSH, crear el archivo (copia y pega todo)</div>
+      <pre><span class="g">nano /opt/narosa/docker-compose.yml</span>
+<span class="c"># Se abre un editor. Pega EXACTAMENTE esto (cambia los valores marcados):</span>
+
+version: '3.8'
+services:
+
+  evolution-api:
+    image: atendai/evolution-api:latest
+    container_name: evolution_api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - <span class="b">SERVER_URL</span>=<span class="p">https://bot.narosasp.com</span>
+      - <span class="b">AUTHENTICATION_API_KEY</span>=<span class="p">CAMBIA_ESTO_POR_UNA_CLAVE_SECRETA</span>
+      - <span class="b">AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES</span>=true
+    volumes:
+      - evolution_data:/evolution/instances
+      - evolution_store:/evolution/store
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - <span class="b">N8N_HOST</span>=<span class="p">bot.narosasp.com</span>
+      - <span class="b">N8N_PATH</span>=<span class="p">/n8n/</span>
+      - <span class="b">N8N_PROTOCOL</span>=https
+      - <span class="b">WEBHOOK_URL</span>=<span class="p">https://bot.narosasp.com/n8n/</span>
+      - <span class="b">N8N_BASIC_AUTH_ACTIVE</span>=true
+      - <span class="b">N8N_BASIC_AUTH_USER</span>=<span class="p">narosa</span>
+      - <span class="b">N8N_BASIC_AUTH_PASSWORD</span>=<span class="p">CAMBIA_ESTO_POR_PASSWORD_SEGURA</span>
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  evolution_data:
+  evolution_store:
+  n8n_data:
+
+<span class="c"># Para guardar en nano: Ctrl+O → Enter → Ctrl+X</span></pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Arrancar todos los servicios</div>
+      <pre><span class="g">cd /opt/narosa && docker compose up -d</span>
+<span class="c"># Espera 2-3 minutos. Luego verifica que están corriendo:</span>
+<span class="g">docker compose ps</span>
+<span class="c"># Deberías ver: evolution_api, redis, n8n — todos en estado "running"</span></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">4.2</div>
+      <div class="step-info">
+        <div class="step-title">Configurar Nginx para que todo funcione con HTTPS</div>
+        <div class="step-desc">Nginx es el "portero" que dirige el tráfico a cada servicio</div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-label">Crear archivo de configuración Nginx</div>
+      <pre><span class="g">nano /etc/nginx/sites-available/narosa-bot</span>
+<span class="c"># Pegar esto:</span>
+
+server {
+    server_name bot.narosasp.com;
+
+    <span class="c"># Evolution API (WhatsApp)</span>
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    <span class="c"># n8n (automatización)</span>
+    location /n8n/ {
+        proxy_pass http://localhost:5678/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+    }
+}
+
+<span class="c"># Guardar con Ctrl+O, Enter, Ctrl+X. Luego activar:</span>
+<span class="g">ln -s /etc/nginx/sites-available/narosa-bot /etc/nginx/sites-enabled/</span>
+<span class="g">nginx -t && systemctl reload nginx</span>
+<span class="c"># Si dice "syntax is ok" y "test is successful" → ✓ todo bien</span></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">4.3</div>
+      <div class="step-info">
+        <div class="step-title">Conectar el número de WhatsApp escaneando el QR</div>
+        <div class="step-desc">Necesitarás el móvil con el WhatsApp de Narosa a mano</div>
+        <div class="step-badges"><span class="sb red">Necesitas el teléfono físico de Narosa</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>Abre en el navegador: <strong>https://bot.narosasp.com/manager</strong><span class="note">Si pide autenticación, usa la API key que pusiste en el docker-compose</span></div></li>
+        <li><span class="box">☐</span><div>Clic en <strong>"New Instance"</strong> → nombre: <strong>narosa</strong> → crear</div></li>
+        <li><span class="box">☐</span><div>Aparecerá un código QR en pantalla</div></li>
+        <li><span class="box">☐</span><div>En el móvil con WhatsApp de Narosa: <strong>Ajustes (⚙️) → Dispositivos vinculados → Vincular un dispositivo</strong></div></li>
+        <li><span class="box">☐</span><div>Escanear el QR que aparece en el navegador del ordenador</div></li>
+        <li><span class="box">☐</span><div>En el manager debe aparecer el estado: <strong style="color:var(--green)">CONNECTED</strong> ✓</div></li>
+      </ul>
+    </div>
+    <div class="callout warn">
+      <strong>El móvil debe quedarse encendido y con conexión</strong>
+      <p>Evolution API funciona como un dispositivo vinculado de WhatsApp (como WhatsApp Web). El móvil puede estar en otro sitio, pero necesita batería y conexión a internet. No hace falta que la pantalla esté encendida.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 5 — N8N FLUJOS
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num orange">n8n</div>
+    <div>
+      <div class="phase-title">FASE 5 · n8n — Crear los flujos de automatización<span class="phase-time">· ~8h · Gratis</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">n8n es como un "Lego" visual de automatización. Conectas piezas (nodos) sin programar. Esta es la fase que más tiempo lleva pero es la más importante.</div>
+  <div class="hr"></div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">5.1</div>
+      <div class="step-info">
+        <div class="step-title">Entrar en n8n y crear el primer workflow</div>
+        <div class="step-badges"><span class="sb pink">bot.narosasp.com/n8n</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>Abrir <strong>https://bot.narosasp.com/n8n</strong> → usuario: <strong>narosa</strong> · contraseña: la que pusiste</div></li>
+        <li><span class="box">☐</span><div>Clic en <strong>"New Workflow"</strong> → nombre: <strong>"Narosa · WhatsApp → IA → Respuesta"</strong></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">5.2</div>
+      <div class="step-info">
+        <div class="step-title">Flujo principal: WhatsApp → IA → Respuesta automática</div>
+        <div class="step-desc">Son 4 nodos conectados en línea. Los añades uno a uno haciendo clic en el "+"</div>
+      </div>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-label">Estructura visual del workflow en n8n</div>
+      <div class="flow-row">
+        <div class="fn trig">🔗 Nodo 1<br><small>Webhook</small></div>
+        <div class="fa">→</div>
+        <div class="fn act">🔍 Nodo 2<br><small>IF Filter</small></div>
+        <div class="fa">→</div>
+        <div class="fn act">🤖 Nodo 3<br><small>HTTP → Claude</small></div>
+        <div class="fa">→</div>
+        <div class="fn ok">📤 Nodo 4<br><small>Enviar WA</small></div>
+      </div>
+      <div class="flow-row" style="margin-top:8px">
+        <div style="opacity:0;min-width:105px"></div>
+        <div class="fa" style="opacity:0">→</div>
+        <div style="opacity:0;min-width:105px"></div>
+        <div class="fa">↓</div>
+        <div class="fn dec">🔍 Nodo 5<br><small>IF es Lead?</small></div>
+        <div class="fa">→</div>
+        <div class="fn mail">📧 Nodo 6<br><small>Enviar Email</small></div>
+        <div class="fa">+</div>
+        <div class="fn ok">📊 Nodo 7<br><small>Google Sheets</small></div>
+      </div>
+    </div>
+
+    <div class="code">
+      <div class="code-label">Nodo 1 — Webhook (recibe los mensajes de WhatsApp)</div>
+      <pre>Tipo de nodo: <span class="p">Webhook</span>
+Configuración:
+  HTTP Method: <span class="b">POST</span>
+  Path: <span class="b">wa-narosa</span>
+  → La URL quedará: https://bot.narosasp.com/n8n/webhook/wa-narosa
+
+<span class="c">Después de crear este nodo, ve a Evolution API Manager:</span>
+<span class="c">→ Instance: narosa → Webhooks → URL: https://bot.narosasp.com/n8n/webhook/wa-narosa</span>
+<span class="c">→ Events: activar "messages.upsert"</span></pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Nodo 2 — IF Filter (evitar que el bot se responda a sí mismo)</div>
+      <pre>Tipo de nodo: <span class="p">IF</span>
+Condición: <span class="b">{{ $json.body.data.key.fromMe }}</span> is <span class="b">false</span>
+<span class="c">Esto filtra los mensajes que el bot envía → solo pasan los mensajes DE clientes</span></pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Nodo 3 — HTTP Request a Claude API (el cerebro)</div>
+      <pre>Tipo de nodo: <span class="p">HTTP Request</span>
+URL: <span class="b">https://api.anthropic.com/v1/messages</span>
+Método: <span class="b">POST</span>
+Headers:
+  <span class="b">x-api-key:</span> <span class="p">sk-ant-TU-CLAVE-CLAUDE</span>
+  <span class="b">anthropic-version:</span> <span class="p">2023-06-01</span>
+  <span class="b">content-type:</span> <span class="p">application/json</span>
+
+Body (JSON):
+{
+  <span class="b">"model"</span>: <span class="p">"claude-haiku-4-5-20251001"</span>,
+  <span class="b">"max_tokens"</span>: 400,
+  <span class="b">"system"</span>: <span class="p">"Eres Nara, asistente de Narosa Sweet Party...</span>
+             <span class="p"> [aquí va tu system prompt completo — ver Fase 6]"</span>,
+  <span class="b">"messages"</span>: [
+    {
+      <span class="b">"role"</span>: <span class="p">"user"</span>,
+      <span class="b">"content"</span>: <span class="p">"{{ $json.body.data.message.conversation }}"</span>
+    }
+  ]
+}</pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Nodo 4 — Enviar respuesta por WhatsApp (Evolution API)</div>
+      <pre>Tipo de nodo: <span class="p">HTTP Request</span>
+URL: <span class="b">https://bot.narosasp.com/message/sendText/narosa</span>
+Método: <span class="b">POST</span>
+Headers:
+  <span class="b">apikey:</span> <span class="p">TU-CLAVE-EVOLUTION-API</span>
+  <span class="b">content-type:</span> <span class="p">application/json</span>
+
+Body:
+{
+  <span class="b">"number"</span>: <span class="p">"{{ $('Webhook').item.json.body.data.key.remoteJid }}"</span>,
+  <span class="b">"text"</span>: <span class="p">"{{ $json.content[0].text }}"</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">5.3</div>
+      <div class="step-info">
+        <div class="step-title">Nodo de detección de lead y envío de email</div>
+        <div class="step-desc">Después del nodo 4, añadir la lógica de clasificación de leads</div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-label">Nodo 5 — Segunda llamada a Claude para clasificar el mensaje</div>
+      <pre>Tipo de nodo: <span class="p">HTTP Request</span> (igual que el 3, pero con este body)
+Body:
+{
+  <span class="b">"model"</span>: <span class="p">"claude-haiku-4-5-20251001"</span>,
+  <span class="b">"max_tokens"</span>: 20,
+  <span class="b">"messages"</span>: [{
+    <span class="b">"role"</span>: <span class="p">"user"</span>,
+    <span class="b">"content"</span>: <span class="p">"Clasifica este mensaje en una palabra: DECORACION / COMPRA / INFO / SPAM\nMensaje: {{ $('Webhook').item.json.body.data.message.conversation }}\nResponde SOLO con la categoría."</span>
+  }]
+}
+
+<span class="c">Después añadir nodo IF:</span>
+<span class="c">  Si la respuesta contiene "DECORACION" → rama email urgente</span>
+<span class="c">  Si contiene "COMPRA" → rama email normal</span>
+<span class="c">  Si es "INFO" o "SPAM" → no hacer nada</span></pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Nodo 6 — Enviar email de lead (conectar Gmail en las credenciales de n8n)</div>
+      <pre>Tipo de nodo: <span class="p">Gmail → Send Email</span>
+Para: <span class="b">tiendapoblenou@narosasp.com</span>
+Asunto: <span class="b">🎉 Lead {{ $json.content[0].text }} · {{ $now.format('dd/MM HH:mm') }}</span>
+Cuerpo HTML: (incluir número, mensaje original, clasificación)</pre>
+    </div>
+    <div class="code">
+      <div class="code-label">Nodo 7 — Guardar en Google Sheets (conectar cuenta Google en credenciales)</div>
+      <pre>Tipo de nodo: <span class="p">Google Sheets → Append Row</span>
+Hoja: <span class="b">Leads Narosa</span>
+Columnas a rellenar:
+  A: <span class="b">Fecha</span>      → {{ $now.format('dd/MM/yyyy HH:mm') }}
+  B: <span class="b">Canal</span>      → WhatsApp
+  C: <span class="b">Teléfono</span>   → {{ $('Webhook').item.json.body.data.key.remoteJid }}
+  D: <span class="b">Mensaje</span>    → {{ $('Webhook').item.json.body.data.message.conversation }}
+  E: <span class="b">Tipo Lead</span>  → {{ $json.content[0].text }}
+  F: <span class="b">Estado</span>     → Nuevo</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 6 — SYSTEM PROMPT / IA
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num purple">IA</div>
+    <div>
+      <div class="phase-title">FASE 6 · Personalizar la IA para Narosa<span class="phase-time">· ~2h · 0€</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">El "guion" que le das a la IA para que hable como Narosa. Cuanto más detallado, mejores respuestas.</div>
+  <div class="hr"></div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">6.1</div>
+      <div class="step-info">
+        <div class="step-title">System Prompt completo para el bot "Nara"</div>
+        <div class="step-desc">Cópialo en el campo "system" del Nodo 3 de n8n. Personaliza los campos entre [corchetes].</div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-label">System Prompt — copiar y personalizar</div>
+      <pre><span class="g">Eres "Nara", la asistente virtual de Narosa Sweet Party 🎈</span>
+<span class="g">La tienda de globos y decoración de fiestas de referencia en Barcelona,</span>
+<span class="g">con más de 10 años de experiencia haciendo especiales los momentos.</span>
+
+<span class="b">CÓMO DEBES HABLAR:</span>
+- Tono: alegre, cálido y cercano. Como una amiga experta en fiestas.
+- Usa emojis con moderación: máximo 2 por mensaje (🎈 🎉 ✨ 💛 🎂)
+- Respuestas cortas: máximo 4 frases. Si el cliente quiere más, pregunta.
+- SIEMPRE termina ofreciendo ayuda o el siguiente paso.
+- SIEMPRE menciona narosasp.com para compras online.
+- Si no sabes algo con certeza: "Lo consulto con el equipo ✨"
+- NUNCA inventes precios, stock o fechas — consulta el catálogo.
+
+<span class="b">DATOS DE LA TIENDA:</span>
+- Nombre: Narosa Sweet Party
+- Dirección: C/ María Aguiló 129, Barcelona (barrio Poblenou)
+- Horario: Lunes a viernes 10:00-13:30 y 17:00-20:00 | Sábado 10:00-14:00 | Domingo CERRADO
+- Teléfono tienda: 930 42 70 49
+- WhatsApp: +34 640 92 16 71 (este mismo)
+- Web: narosasp.com
+- Instagram: @narosasweetparty
+- Email: tiendapoblenou@narosasp.com
+
+<span class="b">ENVÍOS:</span>
+- Enviamos a toda España
+- Plazos: 2-3 días hábiles Península, 3-5 Islas
+- Gastos de envío: desde 3,95€ (gratuito a partir de [añadir importe mínimo])
+- Para pedidos urgentes: recogida en tienda el mismo día si hay stock
+
+<span class="b">SERVICIOS QUE OFRECEMOS:</span>
+- Venta de globos, kits de fiesta, guirnaldas, vajilla, confeti, toppers
+- Decoración a domicilio para eventos en Barcelona y alrededores
+- Globos con helio
+- Talleres de repostería infantil (preguntar disponibilidad)
+- Pedidos personalizados
+
+<span class="b">FLUJO PARA ENCARGOS DE DECORACIÓN:</span>
+Si alguien quiere decorar un evento, recoge SIEMPRE estos datos en conversación:
+1. Fecha del evento
+2. Tipo de evento y temática
+3. Lugar (a domicilio o en local) y dirección aproximada
+4. Número de personas/niños
+5. Nombre y teléfono de contacto
+Cuando tengas todos los datos, di: "¡Perfecto! El equipo de Narosa os contactará en menos de 2 horas con la propuesta. 💛"
+
+<span class="b">FUERA DE HORARIO:</span>
+Si son horas fuera del horario de la tienda, responde igual pero añade al final:
+"Os atendemos personalmente desde [hora de apertura del próximo día]. 💛"
+
+<span class="o">CATÁLOGO ACTUALIZADO (stock en tiempo real):</span>
+<span class="o">[AQUÍ VA EL JSON DEL CATÁLOGO — ver Fase 7 para conectar Shopify]</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 7 — SHOPIFY
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num" style="background:linear-gradient(135deg,#96bf48,#5c8e1a)">SH</div>
+    <div>
+      <div class="phase-title">FASE 7 · Shopify — Stock en tiempo real<span class="phase-time">· ~3h · Gratis</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">Conectar narosasp.com para que el bot responda con precios y disponibilidad reales, sin que tengas que actualizarlo manualmente.</div>
+  <div class="hr"></div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">7.1</div>
+      <div class="step-info">
+        <div class="step-title">Crear app privada en el admin de Shopify</div>
+        <div class="step-badges"><span class="sb green">Solo lectura — no cambia nada en tu tienda</span></div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>Admin de Shopify (narosasp.com/admin) → <strong>Configuración → Apps → Desarrollar apps</strong></div></li>
+        <li><span class="box">☐</span><div>Clic en <strong>"Crear app"</strong> → nombre: <strong>"Narosa Bot"</strong></div></li>
+        <li><span class="box">☐</span><div>Ir a <strong>"Permisos de la API de Admin"</strong> → activar solo lectura en: <strong>read_products</strong>, <strong>read_inventory</strong><span class="note">No actives más permisos — solo necesitamos leer productos</span></div></li>
+        <li><span class="box">☐</span><div>Clic en <strong>"Instalar app"</strong></div></li>
+        <li><span class="box">☐</span><div>Copiar el <strong>Admin API access token</strong> (empieza por shpat_...) y guardarlo</div></li>
+      </ul>
+    </div>
+    <div class="code">
+      <div class="code-label">Cómo añadir la consulta de Shopify en n8n (antes del nodo de Claude)</div>
+      <pre><span class="c"># Añadir un nodo HTTP Request ANTES del nodo de Claude:</span>
+URL: <span class="b">https://narosasp.com/admin/api/2024-01/products.json</span>
+     <span class="b">?title={{ $json.body.data.message.conversation }}&limit=3</span>
+Método: GET
+Headers:
+  <span class="b">X-Shopify-Access-Token:</span> <span class="p">shpat_TU_TOKEN_AQUI</span>
+
+<span class="c"># El resultado (precio, stock, URL) lo pasas al sistema prompt de Claude:</span>
+<span class="c"># system: "...CATÁLOGO: {{ JSON.stringify($node["Shopify"].json.products) }}"</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FASE 8 — INSTAGRAM DM
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num" style="background:linear-gradient(135deg,#E1306C,#833AB4)">IG</div>
+    <div>
+      <div class="phase-title">FASE 8 · Instagram DM — @narosasweetparty<span class="phase-time">· ~4h · Gratis (si Meta aprobó)</span></div>
+    </div>
+  </div>
+  <div class="phase-sub">Si creaste la app de Meta en la Fase 1 hace ya varios días, para ahora ya debería estar aprobada. Si no, espera a que llegue la aprobación antes de continuar.</div>
+  <div class="hr"></div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-dot">8.1</div>
+      <div class="step-info">
+        <div class="step-title">Completar la configuración del webhook de Instagram en Meta</div>
+        <div class="step-desc">Ahora que tienes el servidor y n8n activos, puedes completar lo que dejaste pendiente en la Fase 1</div>
+      </div>
+    </div>
+    <div class="checklist">
+      <ul>
+        <li><span class="box">☐</span><div>En n8n: crear un nuevo workflow → <strong>"Narosa · Instagram DM → IA → Respuesta"</strong></div></li>
+        <li><span class="box">☐</span><div>Añadir nodo Webhook: Path <strong>ig-narosa</strong> · Método <strong>GET + POST</strong></div></li>
+        <li><span class="box">☐</span><div>En Meta Developers → tu app → Webhooks → Instagram → <strong>"Suscribirse a este objeto"</strong></div></li>
+        <li><span class="box">☐</span><div>URL: <strong>https://bot.narosasp.com/n8n/webhook/ig-narosa</strong></div></li>
+        <li><span class="box">☐</span><div>Token de verificación: <strong>narosa2026</strong> (el que definiste antes)</div></li>
+        <li><span class="box">☐</span><div>Verificar la suscripción → Meta enviará un GET al webhook → tu n8n debe responder con el <strong>hub.challenge</strong></div></li>
+      </ul>
+    </div>
+    <div class="code">
+      <div class="code-label">Cómo responder al GET de verificación de Meta en n8n</div>
+      <pre><span class="c"># En el nodo Webhook de n8n, añadir un nodo IF después:</span>
+<span class="c"># Si el método es GET → responder con el hub.challenge</span>
+
+Condición: <span class="b">{{ $json.query['hub.verify_token'] }}</span> equals <span class="b">narosa2026</span>
+Rama TRUE → Nodo "Respond to Webhook":
+  Body: <span class="b">{{ $json.query['hub.challenge'] }}</span>
+  Content-Type: text/plain
+
+<span class="c"># Rama FALSE (POST = mensaje real) → continúa al flujo de IA</span>
+
+<span class="c"># Para enviar la respuesta por Instagram:</span>
+URL: https://graph.facebook.com/v19.0/me/messages
+     <span class="b">?access_token=TU_PAGE_ACCESS_TOKEN</span>
+Método: POST
+Body:
+{
+  <span class="b">"recipient"</span>: { <span class="b">"id"</span>: <span class="p">"{{ $json.body.entry[0].messaging[0].sender.id }}"</span> },
+  <span class="b">"message"</span>: { <span class="b">"text"</span>: <span class="p">"{{ $node['Claude'].json.content[0].text }}"</span> }
+}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     COSTES TOTALES
+═══════════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num gold">€</div>
+    <div>
+      <div class="phase-title">Resumen de costes — lo que pagas tú solo</div>
+    </div>
+  </div>
+  <div class="hr"></div>
+
+  <table class="ctable" style="background:var(--surf);border:1px solid var(--line);border-radius:14px;overflow:hidden;width:100%">
+    <thead><tr><th>Plataforma</th><th>Para qué</th><th>Alta</th><th>Coste mensual</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="cn">Hetzner CX21</div></td>
+        <td style="color:var(--muted);font-size:13px">El servidor donde corre todo</td>
+        <td><span style="font-size:12px;color:var(--muted)">hetzner.com</span></td>
+        <td><span class="price paid">6€/mes</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">Claude API (Anthropic)</div></td>
+        <td style="color:var(--muted);font-size:13px">La IA que responde los mensajes</td>
+        <td><span style="font-size:12px;color:var(--muted)">console.anthropic.com</span></td>
+        <td><span class="price paid">~15€/mes</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">Evolution API</div></td>
+        <td style="color:var(--muted);font-size:13px">Conexión WhatsApp</td>
+        <td><span style="font-size:12px;color:var(--muted)">github.com/EvolutionAPI</span></td>
+        <td><span class="price free">GRATIS</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">n8n (self-hosted)</div></td>
+        <td style="color:var(--muted);font-size:13px">Motor de automatización</td>
+        <td><span style="font-size:12px;color:var(--muted)">n8n.io (self-hosted)</span></td>
+        <td><span class="price free">GRATIS</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">Meta Graph API</div></td>
+        <td style="color:var(--muted);font-size:13px">Instagram DM</td>
+        <td><span style="font-size:12px;color:var(--muted)">developers.facebook.com</span></td>
+        <td><span class="price free">GRATIS</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">Shopify API privada</div></td>
+        <td style="color:var(--muted);font-size:13px">Stock/precios narosasp.com</td>
+        <td><span style="font-size:12px;color:var(--muted)">narosasp.com/admin</span></td>
+        <td><span class="price free">GRATIS</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">Google Sheets</div></td>
+        <td style="color:var(--muted);font-size:13px">CRM de leads</td>
+        <td><span style="font-size:12px;color:var(--muted)">sheets.google.com</span></td>
+        <td><span class="price free">GRATIS</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">Gmail</div></td>
+        <td style="color:var(--muted);font-size:13px">Email de leads</td>
+        <td><span style="font-size:12px;color:var(--muted)">gmail.com</span></td>
+        <td><span class="price free">GRATIS</span></td>
+      </tr>
+      <tr>
+        <td><div class="cn">Redis</div></td>
+        <td style="color:var(--muted);font-size:13px">Memoria de conversaciones</td>
+        <td><span style="font-size:12px;color:var(--muted)">self-hosted en VPS</span></td>
+        <td><span class="price free">GRATIS</span></td>
+      </tr>
+      <tr class="totrow">
+        <td colspan="3" style="color:var(--text)">TOTAL MENSUAL — Sistema completo</td>
+        <td style="color:var(--pink)">~21€/mes</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green" style="margin-top:14px">
+    <strong>Comparativa: hacerlo tú mismo vs contratar el servicio</strong>
+    <p><strong>DIY:</strong> 0€ de setup + ~21€/mes + 35-40h de tu tiempo · <strong>Con servicio:</strong> 597€ setup + 89€/mes + 0h de tu tiempo. Si tu hora vale más de 15€ y prefieres dedicar ese tiempo a vender — sale a cuenta contratar. Si tienes tiempo y ganas de aprender, el DIY es perfectamente viable.</p>
+  </div>
+</div>
+
+<!-- CHECKLIST FINAL -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num green">✓</div>
+    <div><div class="phase-title">Checklist final antes de lanzar</div></div>
+  </div>
+  <div class="hr"></div>
+  <div style="background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:22px 26px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em">WhatsApp</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>Enviar "Hola" → responde con bienvenida</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>"¿Tenéis globos X?" → responde con precio y URL</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>"¿Enviáis a Madrid?" → responde política envíos</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>"Quiero decorar fiesta..." → inicia flujo encargo</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>Email de lead llega a tiendapoblenou@narosasp.com</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>Lead se registra en Google Sheets</li>
+        </ul>
+      </div>
+      <div style="border-left:1px solid var(--line);padding-left:24px">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em">Instagram + General</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>DM a @narosasweetparty → responde automáticamente</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>Mensaje domingo 22h → responde fuera de horario</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>El bot NO responde a sus propios mensajes</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>"Hablar con una persona" → escala a humano</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>Precio de producto consultado → es el del Shopify real</li>
+          <li style="font-size:13.5px;color:var(--muted);display:flex;align-items:flex-start;gap:10px"><span style="color:var(--pink)">☐</span>VPS no se cae (docker compose ps → todos "Up")</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding-top:28px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted)">
+  Guía DIY para Narosa Sweet Party · automatiza<b style="color:var(--green)">wpp</b>.com · Mayo 2026<br>
+  <span style="font-size:11px;margin-top:4px;display:block">¿Necesitas ayuda en algún paso? contacto@automatizawpp.com · WhatsApp: automatizawpp.com</span>
+</div>
+
+</div>
+</body>
+</html>

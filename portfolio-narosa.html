@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Automatización · Narosa Sweet Party</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --pink:#FF6B9D; --pink-dark:#C2185B; --pink-light:rgba(255,107,157,.12);
+  --green:#25D366; --green-dark:#0E6B3C;
+  --bg:#07050A; --bg2:#0D0A12; --surf:#15101E; --surf2:#1D1729;
+  --line:rgba(255,255,255,.07); --text:#F5EEF8; --muted:#9B8FAD;
+  --gold:#D4B36A; --blue:#7EC8E3; --orange:#FFB347; --purple:#CE93D8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(800px 600px at 85% -10%,rgba(255,107,157,.09),transparent 55%),
+  radial-gradient(600px 500px at -5% 50%,rgba(194,24,91,.07),transparent 55%),
+  radial-gradient(400px 400px at 50% 100%,rgba(37,211,102,.05),transparent 60%)}
+
+/* NAV */
+nav{padding:18px 56px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.nav-logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(145deg,var(--pink),var(--pink-dark));display:flex;align-items:center;justify-content:center;font-size:20px}
+.nav-name{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700}
+.nav-client{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:6px 14px;border-radius:999px}
+.nav-client em{color:var(--pink);font-style:normal}
+
+/* HERO */
+.hero{padding:72px 56px 64px;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding:44px 28px}}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--pink);text-transform:uppercase;letter-spacing:.18em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow span{width:24px;height:1px;background:var(--pink)}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:50px;font-weight:700;line-height:1.07;letter-spacing:-.025em;margin-bottom:20px}
+.hero h1 em{font-style:normal;color:var(--pink)}
+.hero p{font-size:16px;color:var(--muted);max-width:460px;margin-bottom:32px;line-height:1.7}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-p{background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;padding:13px 26px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-s{background:transparent;color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;padding:13px 26px;border-radius:12px;text-decoration:none;border:1px solid var(--line);display:inline-flex;align-items:center;gap:8px}
+
+.hero-visual{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hv-card{background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:22px;text-align:center}
+.hv-num{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;line-height:1;margin-bottom:6px}
+.hv-label{font-size:12.5px;color:var(--muted);line-height:1.4}
+.hv-card.accent{background:linear-gradient(135deg,rgba(255,107,157,.1),rgba(194,24,91,.06));border-color:rgba(255,107,157,.2)}
+
+/* WRAP */
+.wrap{max-width:1100px;margin:0 auto;padding:0 56px 80px}
+@media(max-width:700px){.wrap{padding:0 22px 60px}}
+
+/* SECTION */
+.sec{margin-bottom:72px}
+.sec-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--pink);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;line-height:1.2;margin-bottom:10px}
+.sec-title em{font-style:normal;color:var(--pink)}
+.sec-sub{font-size:15px;color:var(--muted);max-width:580px;margin-bottom:36px;line-height:1.65}
+.divider{height:1px;background:var(--line);margin-bottom:40px}
+
+/* PROBLEM / SOLUTION */
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:700px){.ps-grid{grid-template-columns:1fr}}
+.ps-card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:26px}
+.ps-icon{font-size:28px;margin-bottom:12px}
+.ps-title{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px}
+.ps-list{list-style:none}
+.ps-list li{font-size:14px;color:var(--muted);padding:5px 0 5px 18px;position:relative;border-bottom:1px solid var(--line)}
+.ps-list li:last-child{border-bottom:none}
+.ps-list li::before{content:"·";position:absolute;left:0;color:var(--pink);font-size:18px;top:2px}
+
+/* SERVICES GRID */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.svc-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.svc-grid{grid-template-columns:1fr}}
+.svc{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:24px;transition:border-color .2s,transform .2s}
+.svc:hover{border-color:rgba(255,107,157,.3);transform:translateY(-2px)}
+.svc-emoji{font-size:30px;margin-bottom:14px}
+.svc-name{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;margin-bottom:8px}
+.svc-desc{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:var(--surf2);border:1px solid var(--line);border-radius:6px;padding:3px 9px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)}
+.tag.active{border-color:rgba(255,107,157,.3);color:var(--pink);background:var(--pink-light)}
+
+/* FLOW MOCKUP */
+.flow-demo{background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:28px 32px;margin-bottom:16px}
+.fd-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.fd-title .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.chat{display:flex;flex-direction:column;gap:10px;max-width:480px}
+.msg{padding:11px 15px;border-radius:14px;font-size:13.5px;line-height:1.5;max-width:85%}
+.msg.in{background:var(--surf2);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.out{background:linear-gradient(135deg,rgba(37,211,102,.15),rgba(14,107,60,.1));border:1px solid rgba(37,211,102,.2);color:var(--text);align-self:flex-end;border-bottom-right-radius:4px}
+.msg.bot{background:linear-gradient(135deg,rgba(255,107,157,.12),rgba(194,24,91,.08));border:1px solid rgba(255,107,157,.2);color:var(--text);align-self:flex-end;border-bottom-right-radius:4px}
+.msg small{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.chat-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:28px}
+.tl::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--pink),var(--pink-dark),transparent)}
+.tl-item{position:relative;margin-bottom:28px}
+.tl-item::before{content:"";position:absolute;left:-24px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px rgba(255,107,157,.5)}
+.tl-week{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--pink);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.tl-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin-bottom:4px}
+.tl-desc{font-size:13.5px;color:var(--muted)}
+.tl-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--surf2);border:1px solid var(--line);border-radius:6px;padding:3px 10px;font-size:12px;color:var(--muted)}
+
+/* PRICING */
+.price-grid{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:16px}
+@media(max-width:800px){.price-grid{grid-template-columns:1fr}}
+.price-card{background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:28px 24px}
+.price-card.featured{border-color:var(--pink);background:linear-gradient(150deg,rgba(255,107,157,.07),rgba(194,24,91,.04))}
+.pc-badge{display:inline-block;background:var(--pink);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:14px}
+.pc-name{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:6px}
+.pc-desc{font-size:13px;color:var(--muted);margin-bottom:20px;min-height:36px}
+.pc-price{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;line-height:1}
+.pc-price span{font-size:18px;color:var(--muted);font-weight:400}
+.pc-period{font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:6px}
+.pc-setup{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);margin-bottom:18px}
+.pc-features{list-style:none;border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:9px}
+.pc-features li{font-size:13px;color:var(--muted);display:flex;align-items:flex-start;gap:8px}
+.pc-features li .y{color:var(--green);flex-shrink:0}
+.pc-features li .n{color:rgba(255,255,255,.15);flex-shrink:0}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,var(--surf),var(--surf2));border:1px solid rgba(255,107,157,.2);border-radius:22px;padding:52px 60px;text-align:center;position:relative;overflow:hidden}
+.cta-box::before{content:"";position:absolute;top:-50%;left:-20%;width:500px;height:500px;border-radius:50%;background:radial-gradient(rgba(255,107,157,.1),transparent 65%);pointer-events:none}
+.cta-box h2{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;margin-bottom:12px}
+.cta-box h2 em{font-style:normal;color:var(--pink)}
+.cta-box p{font-size:15px;color:var(--muted);margin-bottom:32px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* TECH PILLS */
+.tech-pills{display:flex;flex-wrap:wrap;gap:10px}
+.tp{background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.tp .d{width:7px;height:7px;border-radius:50%}
+
+/* PRINT */
+@media print{
+  body{background:#fff;color:#111}
+  body::before{display:none}
+  nav,*{background-color:#f9f5f8!important;border-color:#ddd!important;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .hero h1 em,.sec-title em,.nav-client em{color:#C2185B!important}
+  .sec{page-break-inside:avoid}
+  .wrap,.hero{padding-left:28px!important;padding-right:28px!important}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🎈</div>
+  <span class="nav-name" style="font-family:'Space Grotesk',sans-serif">automatiza<b style="color:var(--green)">wpp</b></span>
+  <span class="nav-client">Propuesta para <em>Narosa Sweet Party</em></span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow"><span></span>Portfolio de automatización</div>
+    <h1>Narosa <em>Sweet Party</em><br>responde sola,<br>vende más.</h1>
+    <p>Automatizamos WhatsApp e Instagram de tu tienda con IA para que ningún encargo de decoración, ninguna pregunta de globos y ningún cliente se pierda — ni en domingo, ni a las 11 de la noche.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn-p">💬 Empezar ahora</a>
+      <a href="#" class="btn-s">Ver cómo funciona</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hv-card accent">
+      <div class="hv-num" style="color:var(--pink)">24/7</div>
+      <div class="hv-label">Disponible siempre,<br>incluso domingos</div>
+    </div>
+    <div class="hv-card">
+      <div class="hv-num" style="color:var(--green)">+25</div>
+      <div class="hv-label">Leads de decoración<br>nuevos al mes</div>
+    </div>
+    <div class="hv-card">
+      <div class="hv-num" style="color:var(--gold)">&lt;3s</div>
+      <div class="hv-label">Tiempo de respuesta<br>en WhatsApp e IG</div>
+    </div>
+    <div class="hv-card accent">
+      <div class="hv-num" style="color:var(--purple)">x7</div>
+      <div class="hv-label">ROI estimado<br>primer mes</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- PROBLEMA / SOLUCIÓN -->
+  <div class="sec">
+    <div class="sec-eyebrow">Diagnóstico</div>
+    <div class="sec-title">Lo que pasa ahora en<br><em>Narosa</em> — y lo que cambia</div>
+    <div class="divider"></div>
+    <div class="ps-grid">
+      <div class="ps-card">
+        <div class="ps-icon">😓</div>
+        <div class="ps-title" style="color:var(--muted)">Situación actual</div>
+        <ul class="ps-list">
+          <li>Domingos y noches sin nadie respondiendo WhatsApp</li>
+          <li>Preguntas de precio de globos se responden manualmente, una por una</li>
+          <li>Encargos de decoración que llegan tarde o no se reciben</li>
+          <li>Instagram DMs sin responder durante horas</li>
+          <li>El equipo pierde 2-3h/día en preguntas repetidas</li>
+          <li>Leads de eventos de boda/comunión se pierden por lentitud</li>
+        </ul>
+      </div>
+      <div class="ps-card" style="border-color:rgba(255,107,157,.2)">
+        <div class="ps-icon">🎈</div>
+        <div class="ps-title" style="color:var(--pink)">Con automatizawpp</div>
+        <ul class="ps-list">
+          <li>Respuesta automática en &lt;3 segundos, 24h, 7 días</li>
+          <li>IA entrenada con tu catálogo de Shopify — precios reales</li>
+          <li>Encargos de decoración recogidos automáticamente → email urgente</li>
+          <li>@narosasweetparty responde DMs sin intervención humana</li>
+          <li>El equipo solo recibe leads cualificados, listos para cerrar</li>
+          <li>Seguimiento automático a presupuestos que no confirmaron</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICIOS -->
+  <div class="sec">
+    <div class="sec-eyebrow">Qué incluye</div>
+    <div class="sec-title">Todo lo que necesita<br><em>Narosa</em> para automatizarse</div>
+    <div class="sec-sub">Cada módulo está diseñado específicamente para una tienda de globos y decoración de fiestas.</div>
+
+    <div class="svc-grid">
+      <div class="svc">
+        <div class="svc-emoji">💬</div>
+        <div class="svc-name">Bot WhatsApp 24/7</div>
+        <div class="svc-desc">Responde el +34 640 92 16 71 en todo momento. Conoce tu catálogo completo de narosasp.com y lo actualiza en tiempo real desde Shopify.</div>
+        <div class="svc-tags">
+          <span class="tag active">WhatsApp Business</span>
+          <span class="tag active">Catálogo Shopify</span>
+          <span class="tag">Sin horario</span>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-emoji">📸</div>
+        <div class="svc-name">Instagram DM automático</div>
+        <div class="svc-desc">@narosasweetparty responde DMs al instante. Filtra preguntas de producto, redirige a la tienda online y captura leads de eventos.</div>
+        <div class="svc-tags">
+          <span class="tag active">Meta API oficial</span>
+          <span class="tag active">@narosasweetparty</span>
+          <span class="tag">Anti-spam</span>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-emoji">🎉</div>
+        <div class="svc-name">Captación de encargos</div>
+        <div class="svc-desc">Cuando alguien quiere decorar su fiesta, el bot recoge fecha, temática, lugar y contacto. Tú recibes el lead completo por email en &lt;60 segundos.</div>
+        <div class="svc-tags">
+          <span class="tag active">Lead caliente</span>
+          <span class="tag active">Email inmediato</span>
+          <span class="tag">Ticket 150-500€</span>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-emoji">🛒</div>
+        <div class="svc-name">Shopify integrado</div>
+        <div class="svc-desc">El bot consulta stock y precios directamente de narosasp.com antes de responder. Siempre información actualizada, nunca dice que hay stock si no lo hay.</div>
+        <div class="svc-tags">
+          <span class="tag active">Stock en tiempo real</span>
+          <span class="tag">Precios live</span>
+          <span class="tag">URL directa</span>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-emoji">📧</div>
+        <div class="svc-name">Leads a tu email</div>
+        <div class="svc-desc">Cada cliente con intención real de compra o encargo llega a tiendapoblenou@narosasp.com con resumen completo: qué quiere, cuándo, cómo contactarle.</div>
+        <div class="svc-tags">
+          <span class="tag active">Filtro IA</span>
+          <span class="tag active">Datos completos</span>
+          <span class="tag">Google Sheets</span>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="svc-emoji">🔁</div>
+        <div class="svc-name">Seguimientos automáticos</div>
+        <div class="svc-desc">Si alguien pidió presupuesto y no confirmó, el bot le escribe a las 48h recordando la oferta. Recupera ventas que se habrían perdido.</div>
+        <div class="svc-tags">
+          <span class="tag">Reactivación 48h</span>
+          <span class="tag">Sin intervención</span>
+          <span class="tag active">+conversiones</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEMO DE CONVERSACIÓN -->
+  <div class="sec">
+    <div class="sec-eyebrow">Así funciona</div>
+    <div class="sec-title">Conversaciones reales que<br><em>Narosa</em> tendrá automatizadas</div>
+    <div class="divider"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="flow-demo">
+        <div class="fd-title"><span class="dot"></span> WhatsApp · Consulta de producto</div>
+        <div class="chat">
+          <div>
+            <div class="chat-label">Cliente</div>
+            <div class="msg in">Hola! Tenéis globos de dinosaurios para el cumple de mi hijo? 🦕</div>
+          </div>
+          <div>
+            <div class="chat-label">Nara (bot IA)</div>
+            <div class="msg bot">¡Hola! 🎈 ¡Claro que sí! Tenemos el Kit Dinosaurios Completo con 12 globos, guirnalda y topper — todo por 21,90€ en narosasp.com/products/kit-dinos. ¿Lo necesitas para una fecha concreta?</div>
+          </div>
+          <div>
+            <div class="msg in">Sí, para el 20 de junio. ¿Hacéis decoración a domicilio?</div>
+          </div>
+          <div>
+            <div class="msg bot">¡Perfecto! Sí decoramos a domicilio en Barcelona. Para prepararte un presupuesto necesito: ¿cuántos niños serán y dónde es la fiesta? ✨</div>
+            <div style="margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--pink);padding-left:4px">→ LEAD DECORACIÓN detectado · email enviado a Narosa</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-demo">
+        <div class="fd-title"><span class="dot"></span> Instagram DM · Consulta desde post</div>
+        <div class="chat">
+          <div>
+            <div class="chat-label">Seguidor IG</div>
+            <div class="msg in">Hola! Vi en Instagram vuestras mesas dulces 😍 ¿Hacéis para comuniones en Barcelona?</div>
+          </div>
+          <div>
+            <div class="chat-label">Nara (bot IA)</div>
+            <div class="msg bot">¡Hola! 🎉 ¡Nos encanta hacer comuniones! Sí, trabajamos comuniones en Barcelona y alrededores. Para hacerte una propuesta, ¿me dices la fecha aproximada y si la celebración es en casa o en salón?</div>
+          </div>
+          <div>
+            <div class="msg in">El 15 de mayo en un restaurante del Eixample, para 60 personas</div>
+          </div>
+          <div>
+            <div class="msg bot">Perfecto ✨ 60 personas en Eixample el 15 de mayo — apuntado. ¿Me das tu nombre y un teléfono para que el equipo de Narosa te llame hoy mismo con la propuesta?</div>
+            <div style="margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--pink);padding-left:4px">→ LEAD ALTO VALOR · email urgente a equipo Narosa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-demo" style="margin-top:16px">
+      <div class="fd-title"><span class="dot"></span> WhatsApp · Domingo 20:30h — fuera de horario</div>
+      <div class="chat" style="max-width:100%">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+          <div>
+            <div class="chat-label">Cliente (domingo noche)</div>
+            <div class="msg in" style="max-width:100%">Buenas noches! ¿Enviáis a Madrid? Busco globos de boda para el fin de semana</div>
+          </div>
+          <div>
+            <div class="chat-label">Nara responde al instante (aunque esté cerrado)</div>
+            <div class="msg bot" style="max-width:100%">¡Hola! 🎈 Sí, enviamos a toda España. Para el fin de semana lo más seguro es pedir antes del jueves para garantizar llegada. Tenemos una colección preciosa de boda en narosasp.com/collections/boda — ¿quieres que te enviemos los más populares? Os atendemos personalmente desde mañana a las 10h 💛</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="sec">
+    <div class="sec-eyebrow">Proceso</div>
+    <div class="sec-title">De 0 a automatizado<br>en <em>21 días</em></div>
+    <div class="sec-sub">Cronograma real para Narosa Sweet Party. Tú no necesitas hacer nada técnico.</div>
+
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-week">Semana 1 · Días 1-7</div>
+        <div class="tl-title">Infraestructura + WhatsApp activo</div>
+        <div class="tl-desc">Servidor configurado, Evolution API conectado al +34 640 92 16 71, primeras respuestas automáticas funcionando (FAQ básica: horarios, ubicación, envíos).</div>
+        <div class="tl-chips"><span class="chip">VPS Hetzner</span><span class="chip">Evolution API</span><span class="chip">n8n instalado</span><span class="chip">SSL configurado</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">Semana 2 · Días 8-14</div>
+        <div class="tl-title">IA + Shopify + Leads al email</div>
+        <div class="tl-desc">Bot entrenado con el catálogo completo de narosasp.com, integración con Shopify API (precios y stock en tiempo real), sistema de leads operativo → emails a tiendapoblenou@narosasp.com.</div>
+        <div class="tl-chips"><span class="chip">Claude API</span><span class="chip">Shopify conectado</span><span class="chip">Filtro leads</span><span class="chip">Google Sheets CRM</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-week">Semana 3 · Días 15-21</div>
+        <div class="tl-title">Instagram DM + tests + formación</div>
+        <div class="tl-desc">Meta App aprobada, @narosasweetparty respondiendo DMs automáticamente, tests con mensajes reales, ajuste de prompts con vuestro feedback, sesión de formación de 1h para el equipo.</div>
+        <div class="tl-chips"><span class="chip">Meta App</span><span class="chip">IG Webhooks</span><span class="chip">Tests reales</span><span class="chip">Formación 1h</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH -->
+  <div class="sec">
+    <div class="sec-eyebrow">Stack tecnológico</div>
+    <div class="sec-title">Herramientas <em>probadas</em>,<br>sin costes sorpresa</div>
+    <div class="sec-sub">Open source + APIs oficiales. Sin suscripciones caras. Todo el código y los datos son de Narosa.</div>
+    <div class="tech-pills">
+      <div class="tp"><span class="d" style="background:var(--green)"></span>n8n · Orquestador de flujos</div>
+      <div class="tp"><span class="d" style="background:var(--green)"></span>Evolution API · WhatsApp</div>
+      <div class="tp"><span class="d" style="background:var(--pink)"></span>Meta Graph API · Instagram</div>
+      <div class="tp"><span class="d" style="background:var(--purple)"></span>Claude API · Inteligencia artificial</div>
+      <div class="tp"><span class="d" style="background:var(--orange)"></span>Shopify API · Stock en tiempo real</div>
+      <div class="tp"><span class="d" style="background:var(--gold)"></span>Google Sheets · CRM de leads</div>
+      <div class="tp"><span class="d" style="background:var(--blue)"></span>Hetzner VPS · Servidor</div>
+      <div class="tp"><span class="d" style="background:var(--muted)"></span>Redis · Memoria de sesión</div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="sec">
+    <div class="sec-eyebrow">Precios</div>
+    <div class="sec-title">Una inversión que se<br><em>paga sola</em> en 30 días</div>
+    <div class="sec-sub">Precio de puesta en marcha + tarifa mensual plana. Sin sorpresas.</div>
+
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="pc-name">Básico</div>
+        <div class="pc-desc">Solo WhatsApp. Perfecto para empezar a automatizar.</div>
+        <div class="pc-price">297<span>€</span></div>
+        <div class="pc-period">pago único de setup</div>
+        <div class="pc-setup">+ 49€/mes mantenimiento</div>
+        <ul class="pc-features">
+          <li><span class="y">✓</span>Bot WhatsApp 24/7</li>
+          <li><span class="y">✓</span>FAQ automatizada</li>
+          <li><span class="y">✓</span>Filtro de leads + email</li>
+          <li><span class="y">✓</span>CRM Google Sheets</li>
+          <li><span class="n">✗</span>Instagram DM</li>
+          <li><span class="n">✗</span>Shopify en tiempo real</li>
+          <li><span class="n">✗</span>Seguimientos automáticos</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <div class="pc-badge">RECOMENDADO PARA NAROSA</div>
+        <div class="pc-name">Growth</div>
+        <div class="pc-desc">WhatsApp + Instagram + Shopify + leads cualificados.</div>
+        <div class="pc-price">597<span>€</span></div>
+        <div class="pc-period">pago único de setup</div>
+        <div class="pc-setup">+ 89€/mes mantenimiento</div>
+        <ul class="pc-features">
+          <li><span class="y">✓</span>Bot WhatsApp 24/7</li>
+          <li><span class="y">✓</span>Instagram DM automático</li>
+          <li><span class="y">✓</span>Shopify API (stock real)</li>
+          <li><span class="y">✓</span>Flujo encargos decoración</li>
+          <li><span class="y">✓</span>Leads urgentes por email</li>
+          <li><span class="y">✓</span>Seguimientos automáticos</li>
+          <li><span class="y">✓</span>Soporte WhatsApp</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="pc-name">Premium</div>
+        <div class="pc-desc">Growth + métricas, talleres y personalización avanzada.</div>
+        <div class="pc-price" style="font-size:28px;line-height:1.3">A medida</div>
+        <div class="pc-period">presupuesto personalizado</div>
+        <div class="pc-setup">Todo incluido</div>
+        <ul class="pc-features">
+          <li><span class="y">✓</span>Todo lo de Growth</li>
+          <li><span class="y">✓</span>Dashboard de métricas</li>
+          <li><span class="y">✓</span>Inscripción talleres infantiles</li>
+          <li><span class="y">✓</span>Respuesta a comentarios IG</li>
+          <li><span class="y">✓</span>Multi-idioma (es/en/ca)</li>
+          <li><span class="y">✓</span>SLA respuesta &lt;4h</li>
+          <li><span class="y">✓</span>Formación equipo completo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h2>¿Empezamos la semana<br>que viene, <em>Narosa</em>?</h2>
+    <p>Primera reunión gratuita de 30 min. Vemos juntos qué conversaciones automatizamos primero<br>y cuántos leads podéis estar recibiendo en 21 días.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-p">🎈 Hablemos por WhatsApp</a>
+      <a href="#" class="btn-s">Ver demo en vivo</a>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding-top:40px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted)">
+    automatiza<b style="color:var(--green)">wpp</b>.com · Portfolio para Narosa Sweet Party · Mayo 2026
+  </div>
+
+</div>
+</body>
+</html>
